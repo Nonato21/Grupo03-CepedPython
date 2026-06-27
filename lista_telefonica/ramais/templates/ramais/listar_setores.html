@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Lista de Setores Cadastrados</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Ramal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for setor in lista_setores %}
+            <tr>
+                <td>{{ setor.id }}</td>
+                <td>{{ setor.nome }}</td>
+                <td>{{ setor.email }}</td>
+                <td>{{ setor.ramal }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Nenhum setor cadastrado ainda.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a href="{% url 'gerenciar_ramais' %}">Ir para Gerenciar Ramais</a>
+</body>
+</html>
