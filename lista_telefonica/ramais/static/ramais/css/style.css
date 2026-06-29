@@ -1,1 +1,50 @@
+:root {
+    --if-verde: #2f9e41;
+    --if-verde-escuro: #1f6f2d;
+    --if-vermelho: #cd191e;
+    --if-branco: #ffffff;
+    --if-cinza-claro: #f5f5f5;
+}
 
+body {
+    background-color: var(--if-cinza-claro);
+}
+
+.navbar-if {
+    background-color: var(--if-verde);
+}
+
+.logo-if {
+    height: 48px;
+    width: auto;
+}
+
+.btn-if {
+    background-color: var(--if-verde);
+    color: var(--if-branco);
+    border: none;
+}
+
+.btn-if:hover {
+    background-color: var(--if-verde-escuro);
+    color: var(--if-branco);
+}
+
+.btn-if-outline {
+    color: var(--if-verde);
+    border: 1px solid var(--if-verde);
+}
+
+.btn-if-outline:hover {
+    background-color: var(--if-verde);
+    color: var(--if-branco);
+}
+
+.badge-if {
+    background-color: var(--if-verde);
+    color: var(--if-branco);
+}
+
+.card-if {
+    border-top: 4px solid var(--if-verde);
+}
