@@ -1,12 +1,161 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
-    
-    <h1>página inicial</h1>
-</head>
-<body>
-    
-</body>
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IFMG - Lista de Ramais | Página Inicial</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="{% static 'ramais/css/style.css' %}" />
+
+    <link rel="icon" href="{% static 'ramais/img/favicon.ico' %}?v=2" type="image/x-icon">
+  </head>
+
+  <body>
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-if">
+      <div class="container">
+        <a
+          class="navbar-brand d-flex align-items-center gap-2"
+          href="{% url 'index' %}"
+        >
+          <img
+            src="{% static 'ramais/img/logo-if.png' %}"
+            alt="Logo do Instituto Federal"
+            class="logo-if"
+          />
+          <span class="fw-bold">IFMG Campus São João Evangelista - Lista de Ramais</span>
+        </a>
+
+        <!-- Botão do menu em telas pequenas -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#menuNavbar"
+          aria-controls="menuNavbar"
+          aria-expanded="false"
+          aria-label="Abrir menu de navegação"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Links da navbar -->
+        <div class="collapse navbar-collapse justify-content-end" id="menuNavbar">
+          <div class="navbar-nav gap-2">
+            <a href="{% url 'listar_setores' %}" class="btn btn-outline-light btn-sm">
+              Setores
+            </a>
+
+            <a href="{% url 'gerenciar_ramais' %}" class="btn btn-light btn-sm">
+              Gerenciar
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Conteúdo principal -->
+    <main class="container my-5">
+      <!-- Área de destaque -->
+      <section class="text-center mb-5">
+        <span class="badge badge-if mb-3">Sistema Escolar</span>
+
+        <h1 class="display-5 fw-bold">
+          Lista Telefônica <br> IFMG Campus São João Evangelista
+        </h1>
+
+        <p class="lead text-muted">
+          Consulte e gerencie ramais, setores e contatos internos de forma simples
+          e organizada.
+        </p>
+
+        <div class="mt-4">
+          <a href="{% url 'listar_setores' %}" class="btn btn-if btn-lg me-2">
+            Ver Ramais
+          </a>
+
+          <a href="{% url 'gerenciar_ramais' %}" class="btn btn-if-outline btn-lg">
+            Gerenciar Ramais
+          </a>
+        </div>
+      </section>
+
+      <!-- Cards -->
+      <section class="row g-4">
+        <div class="col-md-4">
+          <div class="card card-if shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">
+                Consulta rápida
+              </h5>
+
+              <p class="card-text text-muted">
+                Encontre setores e ramais cadastrados no sistema.
+              </p>
+
+              <a href="{% url 'listar_setores' %}" class="btn btn-if">
+                Consultar
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card card-if shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">
+                Gerenciamento
+              </h5>
+
+              <p class="card-text text-muted">
+                Acesse a área responsável por cadastrar, editar ou atualizar ramais.
+              </p>
+
+              <a href="{% url 'gerenciar_ramais' %}" class="btn btn-if">
+                Gerenciar
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card card-if shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">
+                Organização
+              </h5>
+
+              <p class="card-text text-muted">
+                Mantenha os contatos internos da escola centralizados em um só lugar.
+              </p>
+
+              <button class="btn btn-secondary" disabled>
+                Em desenvolvimento
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center text-muted py-4">
+      <small>
+        Bolsa Futuro Digital - CEPEDI - Curso Python
+      </small>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    ></script>
+  </body>
 </html>
