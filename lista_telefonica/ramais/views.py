@@ -10,3 +10,6 @@ def listar_setores(request):
 
 def gerenciar_ramais(request):
     return render(request, 'ramais/gerenciar_ramais.html')
+
+def index(request):
+    return render(request, 'ramais/index.html')
