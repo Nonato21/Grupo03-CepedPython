@@ -59,11 +59,11 @@
       <span class="badge badge-if mb-3">Administração</span>
 
       <h1 class="fw-bold">
-        Gerenciar Ramais
+        Editar Ramais
       </h1>
 
       <p class="text-muted">
-        Cadastre ou atualize informações dos setores e seus respectivos ramais.
+        Atualize as informações dos setores e seus respectivos ramais.
       </p>
     </section>
 
@@ -83,11 +83,11 @@
 
       <div class="card-body">
         <h5 class="card-title mb-4">
-          Cadastro de Setor
+          Atualização de Setor
         </h5>
 
-        <!-- Form para enviar os dados-->
-        <form method="post" action="{% url 'cadastrar_setores' %}">
+        <!-- Form para atualizar os dados-->
+        <form method="post" action="{% url 'editar_setores'  setor.id %}">
           {% csrf_token %}
 
           <!-- Mensagens de erro caso o usuário não preencha o campo do nome corretamente -->
@@ -95,7 +95,7 @@
             <label class="form-label">Nome do Setor</label>
 
             <input type="text" id="nome" name="nome" class="form-control {% if erro_nome %}is-invalid{% endif %}"
-              value="{{ nome }}" placeholder="Ex: Tecnologia da informação">
+              value="{{ nome|default:setor.nome }}" placeholder="Ex: Tecnologia da informação">
 
             {% if erro_nome %}
             <div class="invalid-feedback">
@@ -111,7 +111,7 @@
             </label>
 
             <input type="email" id="email" name="email" class="form-control {% if erro_email %}is-invalid{% endif %}"
-              value="{{ email }}" placeholder="Ex: setor@ifmg.edu.br">
+              value="{{ email|default:setor.email }}" placeholder="Ex: setor@ifmg.edu.br">
 
             {% if erro_email %}
             <div class="invalid-feedback">
@@ -127,7 +127,7 @@
               Ramal
             </label>
             <input type="text" id="ramal" name="ramal" class="form-control {% if erro_ramal %}is-invalid{% endif %}"
-              value="{{ ramal }}" placeholder="Ex: 2942" />
+              value="{{ ramal|default:setor.ramal }}" placeholder="Ex: 2942" />
             {% if erro_ramal %}
             <div class="invalid-feedback">
               {{ erro_ramal }}
@@ -138,7 +138,7 @@
 
           <div class="d-flex gap-2">
             <button type="submit" class="btn btn-if">
-              Salvar
+              Salvar alterações
             </button>
 
             <a href="{% url 'listar_setores' %}" class="btn btn-if-outline">
