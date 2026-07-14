@@ -59,17 +59,28 @@
       <p class="text-muted">Veja abaixo os setores, e-mails e ramais cadastrados no sistema.</p>
 
       <!-- Barra de pesquisa -->
-      <div class="row mb-4">
-        <div class="col-md-8 col-lg-6">
-          <div class="input-group shadow-sm">
-            <button class="btn btn-if" type="button" aria-label="Pesquisar"><i class="bi bi-search"></i></button>
+      <section>
+  <div class="row mb-4">
+    <div class="col-md-8 col-lg-6">
+      <form method="GET" action="{% url 'listar_setores' %}">
+        <div class="input-group shadow-sm">
+          
+          <button class="btn btn-if" type="submit" aria-label="Pesquisar">
+            <i class="bi bi-search"></i>
+          </button>
 
-            <input type="search" class="form-control" placeholder="Pesquisar por setor, e-mail ou ramal..."
-              aria-label="Pesquisar setor" />
-          </div>
+          <input type="search" 
+                 name="q" 
+                 class="form-control" 
+                 placeholder="Pesquisar por setor, e-mail ou ramal..."
+                 aria-label="Pesquisar setor" 
+                 value="{{ request.GET.q|default_if_none:'' }}" />
+                 
         </div>
-      </div>
-    </section>
+      </form>
+    </div>
+  </div>
+</section>
 
     <!-- Card com tabela -->
     <section class="card card-if shadow-sm">

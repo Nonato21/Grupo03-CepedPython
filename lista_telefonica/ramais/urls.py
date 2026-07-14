@@ -8,5 +8,4 @@ urlpatterns = [
     path("setores/cadastrar/", views.cadastrar_setores,name="cadastrar_setores"),
     path("setores/excluir/<int:id>/", views.deletar_setores,name="deletar_setores"),
     path("setores/editar/<int:id>/", views.editar_setores, name="editar_setores")
-    # espaço para adicionar mais rotas
 ]

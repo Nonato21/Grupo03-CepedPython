@@ -17,7 +17,6 @@ class Setor(models.Model):
 class Pessoa(models.Model):
     nome = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
-    # Aqui está o equivalente à tabela pessoa_setor do script SQL:
     setores = models.ManyToManyField(Setor, related_name='pessoas')
 
     def __str__(self):
