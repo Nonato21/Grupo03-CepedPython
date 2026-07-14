@@ -11,6 +11,10 @@ def listar_setores(request):
 def gerenciar_ramais(request):
     return render(request, 'ramais/gerenciar_ramais.html')
 
+def gerenciar_pessoas(request):
+    setores = Setor.objects.all()
+    return render(request, 'ramais/gerenciar_pessoas.html', {'setores': setores})
+
 def index(request):
     return render(request, 'ramais/index.html')
 
@@ -104,6 +108,11 @@ def cadastrar_setores(request):
         return redirect("listar_setores")
 
     return render(request, "ramais/gerenciar_ramais.html")
+
+def ver_setores(request):
+    setores = Setor.objects.all()
+    return render(request, 'ramais/ver_setores.html', {'lista_setores': setores})
+
 
 #CRUDs
 def deletar_setores(request, id):

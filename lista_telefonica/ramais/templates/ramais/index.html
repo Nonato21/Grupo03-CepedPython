@@ -78,7 +78,7 @@
         </p>
 
         <div class="mt-4">
-          <a href="{% url 'listar_setores' %}" class="btn btn-if btn-lg me-2">
+          <a href="{% url 'ver_setores' %}" class="btn btn-if btn-lg me-2">
             Ver Ramais
           </a>
 
@@ -134,12 +134,12 @@
               </h5>
 
               <p class="card-text text-muted">
-                Mantenha os contatos internos da escola centralizados em um só lugar.
+                Mantenha os contatos internos da escola centralizados em um só lugar. (pessoas)
               </p>
 
-              <button class="btn btn-secondary" disabled>
-                Em desenvolvimento
-              </button>
+              <a href="{% url 'gerenciar_pessoas' %}" class="btn btn-if">
+                Gerenciar
+              </a>
             </div>
           </div>
         </div>
