@@ -6,17 +6,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IFMG - Lista de Ramais | Gerenciar Pessoas</title>
+  
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- CSS personalizado -->
   <link rel="stylesheet" href="{% static 'ramais/css/style.css' %}" />
 </head>
 
 <body>
+  <!-- Barra de navegação -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-if">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'index' %}">
         <img src="{% static 'ramais/img/logo-if.png' %}" alt="Logo" class="logo-if" />
         <span class="fw-bold">IFMG Campus São João Evangelista</span>
       </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavbar"
+        aria-controls="menuNavbar" aria-expanded="false" aria-label="Abrir menu de navegação">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="menuNavbar">
+        <div class="navbar-nav gap-2">
+          <a href="{% url 'index' %}" class="btn btn-outline-light btn-sm">Início</a>
+          <a href="{% url 'listar_setores' %}" class="btn btn-outline-light btn-sm">Setores</a>
+          <a href="{% url 'listar_pessoas' %}" class="btn btn-outline-light btn-sm">Pessoas</a>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -39,7 +57,7 @@
       <div class="card-body">
         <h5 class="card-title mb-4">Dados do Servidor / Funcionário</h5>
 
-        <form method="post" action="">
+        <form method="post" action="{% url 'cadastrar_pessoa' %}">
           {% csrf_token %}
 
           <div class="mb-3">
@@ -47,30 +65,26 @@
             <input type="text" name="nome" class="form-control" placeholder="Ex: João da Silva">
           </div>
 
-          <div class="mb-3">
+          <div class="mb-4">
             <label class="form-label">E-mail Corporativo</label>
             <input type="email" name="email" class="form-control" placeholder="Ex: joao@ifmg.edu.br">
           </div>
 
-          <div class="mb-3">
-            <label class="form-label">Ramal Pessoal</label>
-            <input type="text" name="ramal" class="form-control" placeholder="Ex: 1234">
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-if">Salvar Funcionário</button>
+            <a href="{% url 'listar_pessoas' %}" class="btn btn-if-outline">Voltar para Pessoas</a>
           </div>
-
-          <div class="mb-4">
-            <label class="form-label">Vincular a qual Setor?</label>
-              <select name="setor" class="form-select">
-    <option value="" disabled selected>Clique aqui para escolher um setor...</option>
-    {% for setor in setores %}
-        <option value="{{ setor.id }}">{{ setor.nome }}</option>
-    {% endfor %}
-</select>
-          </div>
-
-          <button type="submit" class="btn btn-if">Salvar Funcionário</button>
         </form>
       </div>
     </section>
   </main>
+
+  <!-- Rodapé-->
+  <footer class="text-center text-muted py-4">
+    <small>Bolsa Futuro Digital - CEPEDI - Curso Python</small>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

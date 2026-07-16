@@ -1,11 +1,6 @@
 from django.db import models
 
-# Create your models here.
-
-from django.db import models
-
 class Setor(models.Model):
-    # O Django já cria o ID (Auto-increment Primary Key) automaticamente!
     nome = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
     ramal = models.CharField(max_length=10)
@@ -17,7 +12,8 @@ class Setor(models.Model):
 class Pessoa(models.Model):
     nome = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
-    setores = models.ManyToManyField(Setor, related_name='pessoas')
+    
+    setores = models.ManyToManyField(Setor, related_name='pessoas', blank=True)
 
     def __str__(self):
         return self.nome

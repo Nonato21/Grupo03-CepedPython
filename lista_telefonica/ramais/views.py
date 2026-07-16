@@ -19,82 +19,52 @@ def index(request):
     return render(request, 'ramais/index.html')
 
 def cadastrar_setores(request):
-
     if request.method == "POST":
-
-        nome = request.POST["nome"].strip()
-        email = request.POST["email"].strip()
-        ramal = request.POST["ramal"].strip()
-    
-               
+        nome = request.POST.get("nome", "").strip()
+        email = request.POST.get("email", "").strip()
+        ramal = request.POST.get("ramal", "").strip()
+        
         if nome == "":
-            return render(request,
-                          "ramais/gerenciar_ramais.html",
-                          {
-                              "nome":nome,
-                              "email":email,
-                              "ramal":ramal,
-                              "erro_nome": "Informe o nome do setor"
-                          })
+            return render(request, "ramais/gerenciar_ramais.html", {
+                "nome": nome, "email": email, "ramal": ramal,
+                "erro_nome": "Informe o nome do setor"
+            })
         
         if email == "":
-            return render(request,
-                          "ramais/gerenciar_ramais.html",
-                          {
-                              "nome":nome,
-                              "email":email,
-                              "ramal":ramal,
-                              "erro_email": "Informe o nome do e-mail"
-                          })
+            return render(request, "ramais/gerenciar_ramais.html", {
+                "nome": nome, "email": email, "ramal": ramal,
+                "erro_email": "Informe o e-mail do setor"
+            })
         
         if ramal == "":
-            return render(request,
-                          "ramais/gerenciar_ramais.html",
-                          {
-                              "nome":nome,
-                              "email":email,
-                              "ramal":ramal,
-                              "erro_ramal": "Informe o número do ramal"
-                          })
+            return render(request, "ramais/gerenciar_ramais.html", {
+                "nome": nome, "email": email, "ramal": ramal,
+                "erro_ramal": "Informe o número do ramal"
+            })
         
         if Setor.objects.filter(nome__iexact=nome).exists():
-            messages.error(request, "Setor já cadastrado anteriormente, por favor adicione outro setor!!!")
-            return render(request,
-                          "ramais/gerenciar_ramais.html",
-                          {
-                            "nome": nome,
-                            "email":email,
-                            "ramal":ramal   
-                          })
-            
+            messages.error(request, "Setor já cadastrado anteriormente, por favor adicione outro setor!")
+            return render(request, "ramais/gerenciar_ramais.html", {
+                "nome": nome, "email": email, "ramal": ramal
+            })
             
         if Setor.objects.filter(email__iexact=email).exists():
-            messages.error(request, "E-mail já cadastrado")
-            return render(request,
-                          "ramais/gerenciar_ramais.html",
-                          {
-                            "nome": nome,
-                            "email":email,
-                            "ramal":ramal   
-                          })
+            messages.error(request, "E-mail já cadastrado!")
+            return render(request, "ramais/gerenciar_ramais.html", {
+                "nome": nome, "email": email, "ramal": ramal 
+            })
         
         if Setor.objects.filter(ramal=ramal).exists():
-            messages.error(request, "Ramal já cadastrado")
-            return render(request, "ramais/gerenciar_ramais.html", 
-                          {
-                            "nome": nome,
-                            "email":email,
-                            "ramal":ramal   
-                          })  
+            messages.error(request, "Ramal já cadastrado!")
+            return render(request, "ramais/gerenciar_ramais.html", {
+                "nome": nome, "email": email, "ramal": ramal 
+            })  
         
-        if(len(ramal)!=4):      
-            messages.error(request, "O ramal deve ter exatamente 4 digitos!!!")
-            return render(request, "ramais/gerenciar_ramais.html", 
-                          {
-                            "nome": nome,
-                            "email":email,
-                            "ramal":ramal   
-                          })
+        if len(ramal) != 4:      
+            messages.error(request, "O ramal deve ter exatamente 4 dígitos!")
+            return render(request, "ramais/gerenciar_ramais.html", {
+                "nome": nome, "email": email, "ramal": ramal 
+            })
         
         Setor.objects.create(
             nome=nome,
@@ -102,10 +72,8 @@ def cadastrar_setores(request):
             ramal=ramal
         )
         
-        messages.success(request, "Setor cadastrado com sucesso!!!")
-        
-
-        return redirect("listar_setores")
+        messages.success(request, f"Setor '{nome}' cadastrado com sucesso!")
+        return redirect("cadastrar_setores")
 
     return render(request, "ramais/gerenciar_ramais.html")
 
@@ -229,53 +197,38 @@ def editar_setores(request, id):
 
 def listar_pessoas(request):
     busca = request.GET.get('q')
-    # O select_related otimiza a busca no banco quando usamos ForeignKey
-    pessoas = Pessoa.objects.all().select_related('setor') 
+    
+    pessoas = Pessoa.objects.all().prefetch_related('setores').distinct() 
 
     if busca:
         pessoas = pessoas.filter(
             Q(nome__icontains=busca) | 
             Q(email__icontains=busca) | 
-            Q(ramal__icontains=busca) |
-            Q(setor__nome__icontains=busca) # Permite buscar pelo nome do setor!
-        )
+            Q(setores__nome__icontains=busca)
+        ).distinct()
     
     return render(request, 'ramais/listar_pessoas.html', {'lista_pessoas': pessoas})
 
 def cadastrar_pessoa(request):
-    setores = Setor.objects.all()
-
     if request.method == "POST":
         nome = request.POST.get("nome", "").strip()
         email = request.POST.get("email", "").strip()
-        ramal = request.POST.get("ramal", "").strip()
-        setor_id = request.POST.get("setor") # Captura o ID do setor escolhido no <select>
         
-        if not nome or not ramal or not setor_id:
-            messages.error(request, "Nome, Ramal e Setor são campos obrigatórios!")
-            return render(request, "ramais/gerenciar_pessoas.html", {'setores': setores})
+        if not nome or not email:
+            messages.error(request, "Nome e E-mail são campos obrigatórios!")
+            return render(request, "ramais/gerenciar_pessoas.html", {'nome': nome, 'email': email})
+
+        if Pessoa.objects.filter(email__iexact=email).exists():
+            messages.error(request, "Este e-mail já está cadastrado para outra pessoa!")
+            return render(request, "ramais/gerenciar_pessoas.html", {'nome': nome, 'email': email})
+
+        Pessoa.objects.create(nome=nome, email=email)
         
-        if len(ramal) != 4:
-            messages.error(request, "O ramal deve ter exatamente 4 dígitos!")
-            return render(request, "ramais/gerenciar_pessoas.html", {'setores': setores})
-
-        if Pessoa.objects.filter(ramal=ramal).exists():
-            messages.error(request, "Este ramal já está em uso por outra pessoa!")
-            return render(request, "ramais/gerenciar_pessoas.html", {'setores': setores})
-
-        setor_selecionado = get_object_or_404(Setor, id=setor_id)
-
-        Pessoa.objects.create(
-            nome=nome,
-            email=email,
-            ramal=ramal,
-            setor=setor_selecionado
-        )
+        messages.success(request, f"{nome} foi cadastrado(a) com sucesso!")
         
-        messages.success(request, "Pessoa cadastrada com sucesso!")
-        return redirect("listar_pessoas")
+        return redirect("cadastrar_pessoa")
 
-    return render(request, "ramais/gerenciar_pessoas.html", {'setores': setores})
+    return render(request, "ramais/gerenciar_pessoas.html")
 
 def editar_pessoa(request, id):
     pessoa = get_object_or_404(Pessoa, id=id)
