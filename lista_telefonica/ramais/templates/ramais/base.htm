@@ -1,0 +1,233 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="Sistema de consulta e gerenciamento de ramais do IFMG Campus São João Evangelista" />
+
+    <title>
+      {% block title %}
+        IFMG - Lista de Ramais
+      {% endblock %}
+    </title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <!-- CSS do projeto -->
+    <link rel="stylesheet" href="{% static 'ramais/css/style.css' %}?v=8" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'ramais/img/favicon.ico' %}?v=2" type="image/x-icon" />
+
+    {% block extra_css %}
+
+    {% endblock %}
+  </head>
+
+  <body>
+    <header class="cabecalho-site">
+      <!-- Faixa verde-escura -->
+      <div class="faixa-institucional">
+        <div class="container py-3 py-lg-4">
+          <a href="{% url 'index' %}" class="marca-institucional">
+            <span class="caixa-logo"><img src="{% static 'ramais/img/logo-if.png' %}" alt="Logo do Instituto Federal" class="logo-if" /></span>
+
+            <span class="texto-institucional">
+              <span class="nome-instituicao">Instituto Federal de Minas Gerais</span>
+
+              <span class="nome-campus">Campus São João Evangelista</span>
+
+              <span class="nome-servico">Lista de Ramais</span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Faixa verde-clara -->
+      <nav class="navbar navbar-expand-lg navbar-dark faixa-navegacao" aria-label="Navegação principal">
+        <div class="container">
+          <span class="navbar-brand d-lg-none mb-0">Menu</span>
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menu"><span class="navbar-toggler-icon"></span></button>
+
+          <div class="collapse navbar-collapse" id="menuPrincipal">
+            <ul class="navbar-nav me-auto">
+              <!-- Início -->
+              <li class="nav-item">
+                <a href="{% url 'index' %}" class="nav-link">
+                  <i class="bi bi-house-door me-1"></i>
+                  Início
+                </a>
+              </li>
+
+              <!-- Consultas -->
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-search me-1"></i>
+                  Consultas
+                </a>
+
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="{% url 'ver_setores' %}" class="dropdown-item">
+                      <i class="bi bi-telephone me-2"></i>
+                      Ramais e setores
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="{% url 'listar_pessoas' %}" class="dropdown-item">
+                      <i class="bi bi-people me-2"></i>
+                      Pessoas cadastradas
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="{% url 'listar_usuarios' %}" class="dropdown-item">
+                      <i class="bi bi-person-gear me-2"></i>
+                      Usuários do sistema
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+              <!-- Gerenciamento -->
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-gear me-1"></i>
+                  Gerenciar
+                </a>
+
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="{% url 'listar_setores' %}" class="dropdown-item">
+                      <i class="bi bi-building me-2"></i>
+                      Setores
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="{% url 'gerenciar_vinculos' %}" class="dropdown-item">
+                      <i class="bi bi-diagram-3 me-2"></i>
+                      Vínculos
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+              <!-- Cadastros -->
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-pencil-square me-1"></i>
+                  Cadastros
+                </a>
+
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="{% url 'gerenciar_ramais' %}" class="dropdown-item">
+                      <i class="bi bi-building-add me-2"></i>
+                      Cadastrar setor
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="{% url 'gerenciar_pessoas' %}" class="dropdown-item">
+                      <i class="bi bi-person-plus me-2"></i>
+                      Cadastrar pessoa
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="{% url 'gerenciar_usuarios' %}" class="dropdown-item">
+                      <i class="bi bi-person-add me-2"></i>
+                      Cadastrar usuário
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <!-- Usuário à direita -->
+            <div class="usuario-sessao">
+              <i class="bi bi-person-circle"></i>
+
+              <span>
+                {% if request.session.nome_usuario %}
+                  {{ request.session.nome_usuario }}
+                {% elif user.is_authenticated %}
+                  {{ user.get_full_name|default:user.username }}
+                {% else %}
+                  Visitante
+                {% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Mensagens do Django -->
+    {% if messages %}
+      <div class="container mt-4">
+        {% for message in messages %}
+          <div class="
+                        alert
+                        {% if message.tags == 'error' %}
+              
+                            alert-danger
+
+            {% elif message.tags %}
+              
+                            alert-{{ message.tags }}
+            {% else %}
+              
+                            alert-info
+
+            {% endif %}
+                        alert-dismissible
+                        fade
+                        show
+                        shadow-sm
+                    "
+            role="alert">
+            {{ message }}
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Conteúdo de cada página -->
+    <main class="conteudo-principal">
+      <div class="container py-5">
+        {% block content %}
+
+        {% endblock %}
+      </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="rodape-site">
+      <div class="container text-center py-3">
+        <small>IFMG Campus São João Evangelista</small>
+
+        <small>Bolsa Futuro Digital - CEPEDI - Curso Python</small>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    {% block extra_js %}
+
+    {% endblock %}
+  </body>
+</html>
