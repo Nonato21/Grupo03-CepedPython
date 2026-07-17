@@ -21,4 +21,7 @@ urlpatterns = [
     # usuarios
     path('usuarios/listar/', views.listar_usuarios, name='listar_usuarios'),
     path('usuarios/cadastrar/', views.cadastrar_usuario, name='gerenciar_usuarios'),
+
+    path('vinculos/gerenciar/', views.gerenciar_vinculos, name='gerenciar_vinculos'),
+    path('vinculos/adicionar/', views.adicionar_vinculo, name='adicionar_vinculo'),
 ]

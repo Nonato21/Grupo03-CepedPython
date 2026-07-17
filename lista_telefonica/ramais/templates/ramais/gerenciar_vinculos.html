@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IFMG - Lista de Ramais | Gerenciar Vínculos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'ramais/css/style.css' %}" />
+</head>
+
+<body>
+  <!-- Barra de navegação -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-if">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'index' %}">
+        <img src="{% static 'ramais/img/logo-if.png' %}" alt="Logo" class="logo-if" />
+        <span class="fw-bold">IFMG Campus São João Evangelista</span>
+      </a>
+      <div class="collapse navbar-collapse justify-content-end">
+        <div class="navbar-nav gap-2">
+          <a href="{% url 'index' %}" class="btn btn-outline-light btn-sm">Início</a>
+          <a href="{% url 'listar_setores' %}" class="btn btn-outline-light btn-sm">Setores</a>
+          <a href="{% url 'listar_pessoas' %}" class="btn btn-outline-light btn-sm">Pessoas</a>
+          <a href="{% url 'listar_usuarios' %}" class="btn btn-outline-light btn-sm">Usuários</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-5">
+    <section class="mb-4">
+      <h1 class="fw-bold">Gerenciar ramais</h1>
+    </section>
+
+    <section class="card card-if shadow-sm">
+      <div class="card-body py-5">
+        
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show w-75 mx-auto" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+          {% endfor %}
+        {% endif %}
+
+        <form method="GET" action="{% url 'gerenciar_vinculos' %}" class="text-center mb-5">
+          <label class="form-label fw-bold">Selecione o ramal</label>
+          <select name="setor_id" class="form-select mx-auto" style="max-width: 600px;" onchange="this.form.submit()">
+            <option value="">-- Escolha um Setor / Ramal --</option>
+            {% for setor in lista_setores %}
+              <option value="{{ setor.id }}" {% if setor.id|stringformat:"s" == setor_selecionado %}selected{% endif %}>
+                {{ setor.ramal }} - {{ setor.nome }}
+              </option>
+            {% endfor %}
+          </select>
+        </form>
+
+        {% if setor_selecionado %}
+        <div class="w-100" style="max-width: 900px; margin: 0 auto;">
+          <div class="table-responsive text-center">
+            <table class="table table-striped table-hover align-middle">
+              <thead class="table-secondary">
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">E-mail</th>
+                  <th scope="col">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for pessoa in pessoas_do_setor %}
+                <tr>
+                  <td>{{ pessoa.id }}</td>
+                  <td><span class="badge bg-primary">{{ pessoa.nome }}</span></td>
+                  <td>{{ pessoa.email }}</td>
+                  <td>
+                    <a href="#" class="btn btn-danger btn-sm" style="background-color: #dc3545; font-size: 12px;">Apagar</a>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="4" class="text-center text-muted py-4">Nenhuma pessoa vinculada a este ramal.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-4 p-4 bg-light rounded border text-center">
+            <h6 class="fw-bold mb-3">Vincular pessoa a este setor</h6>
+            <form method="POST" action="{% url 'adicionar_vinculo' %}" class="d-flex gap-2 justify-content-center align-items-center mx-auto" style="max-width: 600px;">
+              {% csrf_token %}
+              <input type="hidden" name="setor_id" value="{{ setor_selecionado }}">
+              
+              <select name="pessoa_id" class="form-select" required>
+                <option value="">-- Selecione uma pessoa já cadastrada --</option>
+                {% for pessoa in pessoas_disponiveis %}
+                  <option value="{{ pessoa.id }}">{{ pessoa.nome }} ({{ pessoa.email }})</option>
+                {% endfor %}
+              </select>
+              
+              <button type="submit" class="btn btn-success px-4">Adicionar</button>
+            </form>
+          </div>
+        {% endif %}
+
+      </div>
+
+    </section>
+  </main>
+</body>
+</html>

@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Setor, Pessoa, Usuario
 from django.db.models import Q
+from django.urls import reverse
 
 def listar_setores(request):
     setores = Setor.objects.all()
@@ -329,3 +330,47 @@ def cadastrar_usuario(request):
         return redirect("gerenciar_usuarios")
 
     return render(request, 'ramais/gerenciar_usuarios.html')
+
+# VINCULOS
+def gerenciar_vinculos(request):
+    lista_setores = Setor.objects.all().order_by('nome')
+    setor_selecionado = request.GET.get('setor_id')
+    
+    pessoas_do_setor = []
+    pessoas_disponiveis = [] 
+
+    if setor_selecionado:
+        try:
+            setor = Setor.objects.get(id=setor_selecionado)
+            pessoas_do_setor = setor.pessoas.all()
+            
+            pessoas_disponiveis = Pessoa.objects.exclude(setores__id=setor.id).order_by('nome')
+        except Setor.DoesNotExist:
+            setor_selecionado = None
+
+    contexto = {
+        'lista_setores': lista_setores,
+        'setor_selecionado': str(setor_selecionado) if setor_selecionado else None,
+        'pessoas_do_setor': pessoas_do_setor,
+        'pessoas_disponiveis': pessoas_disponiveis,
+    }
+
+    return render(request, 'ramais/gerenciar_vinculos.html', contexto)
+
+def adicionar_vinculo(request):
+    if request.method == "POST":
+        setor_id = request.POST.get('setor_id')
+        pessoa_id = request.POST.get('pessoa_id')
+
+        if setor_id and pessoa_id:
+            setor = Setor.objects.get(id=setor_id)
+            pessoa = Pessoa.objects.get(id=pessoa_id)
+            
+            pessoa.setores.add(setor)
+            
+            messages.success(request, f"'{pessoa.nome}' foi adicionado(a) ao setor com sucesso!")
+            
+            url_retorno = reverse('gerenciar_vinculos') + f'?setor_id={setor.id}'
+            return redirect(url_retorno)
+            
+    return redirect('gerenciar_vinculos')
