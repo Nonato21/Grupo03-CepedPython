@@ -1,11 +1,11 @@
 # Create your views here.
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Setor, Pessoa
+from .models import Setor, Pessoa, Usuario
 from django.db.models import Q
 
 def listar_setores(request):
-    setores = Setor.objects.all() # Descomente essa linha!
+    setores = Setor.objects.all()
     return render(request, 'ramais/listar_setores.html', {'lista_setores': setores})
 
 def gerenciar_ramais(request):
@@ -284,3 +284,48 @@ def listar_setores(request):
             Q(ramal__icontains=busca)
         )
     return render(request, 'ramais/listar_setores.html', {'lista_setores': setores})
+
+
+#usuarios
+
+def listar_usuarios(request):
+    usuarios = Usuario.objects.all()
+    return render(request, 'ramais/listar_usuarios.html', {'lista_usuarios': usuarios})
+
+def cadastrar_usuario(request):
+    if request.method == "POST":
+        nome = request.POST.get("nome", "").strip()
+        email = request.POST.get("email", "").strip()
+        senha = request.POST.get("senha", "")
+        confirmar_senha = request.POST.get("confirmar_senha", "")
+        status_usuario = request.POST.get("status_usuario", "")
+        nivel_acesso = request.POST.get("nivel_acesso", "")
+
+        contexto = {
+            'nome': nome, 'email': email, 'status_usuario': status_usuario, 'nivel_acesso': nivel_acesso
+        }
+
+        if not nome or not email or not senha:
+            messages.error(request, "Nome, E-mail e Senha são obrigatórios!")
+            return render(request, "ramais/gerenciar_usuarios.html", contexto)
+
+        if senha != confirmar_senha:
+            messages.error(request, "As senhas não coincidem!")
+            return render(request, "ramais/gerenciar_usuarios.html", contexto)
+
+        if Usuario.objects.filter(email__iexact=email).exists():
+            messages.error(request, "Este e-mail já está em uso por outro usuário!")
+            return render(request, "ramais/gerenciar_usuarios.html", contexto)
+
+        Usuario.objects.create(
+            nome=nome,
+            email=email,
+            senha=senha,
+            status_usuario=status_usuario,
+            nivel_acesso=nivel_acesso
+        )
+
+        messages.success(request, f"Usuário '{nome}' cadastrado com sucesso!")
+        return redirect("gerenciar_usuarios")
+
+    return render(request, 'ramais/gerenciar_usuarios.html')
