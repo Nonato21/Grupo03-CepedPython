@@ -10,7 +10,7 @@
 
     <h1 class="fw-bold">Usuários cadastrados</h1>
 
-    <p class="text-muted">Consulte os usuários registrados no sistema.</p>
+    <p class="text-muted">Consulte, edite ou exclua os usuários cadastrados no sistema.</p>
   </section>
 
   <section class="card card-if shadow-sm">
@@ -28,12 +28,17 @@
         <table class="table table-striped table-hover align-middle mb-0">
           <thead class="table-success">
             <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>E-mail</th>
-              <th>Status</th>
-              <th>Nível</th>
-              <th>Ações</th>
+              <th scope="col">ID</th>
+
+              <th scope="col">Nome</th>
+
+              <th scope="col">E-mail</th>
+
+              <th scope="col">Status</th>
+
+              <th scope="col">Nível</th>
+
+              <th scope="col" class="tabela-acoes">Ações</th>
             </tr>
           </thead>
 
@@ -41,7 +46,9 @@
             {% for usuario in lista_usuarios %}
               <tr>
                 <td>{{ usuario.id }}</td>
+
                 <td>{{ usuario.nome }}</td>
+
                 <td>{{ usuario.email }}</td>
 
                 <td>
@@ -52,12 +59,34 @@
                   {% endif %}
                 </td>
 
-                <td>{{ usuario.nivel_acesso }}</td>
+                <td>
+                  {% if usuario.nivel_acesso == 'Administrador' %}
+                    <span class="badge bg-primary">Administrador</span>
+                  {% else %}
+                    <span class="badge bg-secondary">Usuário padrão</span>
+                  {% endif %}
+                </td>
 
                 <td>
-                  <button type="button" class="btn btn-warning btn-sm" disabled>Editar</button>
+                  <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <!-- Editar -->
+                    <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-warning btn-sm">
+                      <i class="bi bi-pencil me-1"></i>
+                      Editar
+                    </a>
 
-                  <button type="button" class="btn btn-danger btn-sm" disabled>Excluir</button>
+                    <!-- Excluir -->
+                    <form method="post" action="{% url 'deletar_usuario' usuario.id %}">
+                      {% csrf_token %}
+
+                      <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(
+                                                    'Tem certeza que deseja excluir este usuário?'
+                                                )">
+                        <i class="bi bi-trash me-1"></i>
+                        Excluir
+                      </button>
+                    </form>
+                  </div>
                 </td>
               </tr>
             {% empty %}
