@@ -1,50 +1,386 @@
 :root {
     --if-verde: #2f9e41;
-    --if-verde-escuro: #1f6f2d;
-    --if-vermelho: #cd191e;
+    --if-verde-claro: #64ad25;
+    --if-verde-escuro: #0f552b;
+    --if-verde-profundo: #083d1e;
     --if-branco: #ffffff;
-    --if-cinza-claro: #f5f5f5;
+    --if-cinza-claro: #f4f6f5;
+    --if-cinza-borda: #dfe5e1;
+    --if-texto: #243129;
+}
+
+html,
+body {
+    min-height: 100%;
 }
 
 body {
+    min-height: 100vh;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    color: var(--if-texto);
     background-color: var(--if-cinza-claro);
 }
 
-.navbar-if {
-    background-color: var(--if-verde);
+.conteudo-principal {
+    flex: 1;
+}
+
+/* =====================================
+   CABEÇALHO INSTITUCIONAL
+===================================== */
+
+.faixa-institucional {
+    color: var(--if-branco);
+
+    background: linear-gradient(100deg,
+            var(--if-verde-profundo),
+            var(--if-verde-escuro));
+}
+
+.marca-institucional {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.25rem;
+
+    color: var(--if-branco);
+    text-decoration: none;
+}
+
+.marca-institucional:hover,
+.marca-institucional:focus {
+    color: var(--if-branco);
+}
+
+.caixa-logo {
+    width: 105px;
+    height: 86px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+
+    padding: 7px;
+
+    background-color: var(--if-branco);
+    border-radius: 5px;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .logo-if {
-    height: 48px;
+    display: block;
+
     width: auto;
+    max-width: 100%;
+    height: 70px;
+
+    object-fit: contain;
 }
+
+.texto-institucional {
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1.12;
+}
+
+.nome-instituicao {
+    font-size: clamp(1.3rem, 2.4vw, 2rem);
+    font-weight: 700;
+}
+
+.nome-campus {
+    margin-top: 4px;
+
+    font-size: clamp(1rem, 1.8vw, 1.45rem);
+    font-weight: 500;
+}
+
+.nome-servico {
+    margin-top: 9px;
+
+    color: #dff1d7;
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* =====================================
+   FAIXA DE NAVEGAÇÃO
+===================================== */
+
+.faixa-navegacao {
+    min-height: 52px;
+
+    padding-top: 0;
+    padding-bottom: 0;
+
+    background: linear-gradient(90deg,
+            #4f9f20,
+            var(--if-verde-claro));
+
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
+}
+
+/*
+Mesmo quando o Bootstrap adiciona active ou show,
+a opção não fica marcada permanentemente.
+*/
+.faixa-navegacao .nav-link,
+.faixa-navegacao .nav-link.active,
+.faixa-navegacao .nav-link.show {
+    padding: 15px 16px;
+
+    color: rgba(255, 255, 255, 0.96);
+    background-color: transparent;
+
+    font-weight: 500;
+    border-radius: 3px;
+
+    transition:
+        color 0.2s,
+        background-color 0.2s;
+}
+
+/* Escurece apenas enquanto o mouse está sobre o item */
+.faixa-navegacao .nav-link:hover,
+.faixa-navegacao .nav-link:focus {
+    color: var(--if-branco);
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.faixa-navegacao .dropdown-menu {
+    margin-top: 0;
+
+    border: 0;
+    border-top: 3px solid var(--if-verde-escuro);
+    border-radius: 0 0 5px 5px;
+
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.2);
+}
+
+.faixa-navegacao .dropdown-item {
+    padding: 10px 16px;
+}
+
+.faixa-navegacao .dropdown-item:hover,
+.faixa-navegacao .dropdown-item:focus {
+    background-color: #e8f4e4;
+}
+
+.faixa-navegacao .dropdown-item:active {
+    color: var(--if-branco);
+    background-color: var(--if-verde);
+}
+
+.faixa-navegacao .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Abre ao passar o mouse no computador */
+@media (min-width: 992px) {
+
+    .faixa-navegacao .dropdown-menu {
+        display: block;
+
+        opacity: 0;
+        visibility: hidden;
+
+        transform: translateY(7px);
+
+        pointer-events: none;
+
+        transition:
+            opacity 0.18s ease,
+            visibility 0.18s ease,
+            transform 0.18s ease;
+    }
+
+    .faixa-navegacao .dropdown:hover>.dropdown-menu,
+    .faixa-navegacao .dropdown:focus-within>.dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+
+        transform: translateY(0);
+
+        pointer-events: auto;
+    }
+
+}
+
+/* =====================================
+   USUÁRIO
+===================================== */
+
+.usuario-sessao {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 11px 0;
+
+    color: var(--if-branco);
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.usuario-sessao i {
+    font-size: 1.25rem;
+}
+
+/* =====================================
+   BOTÕES
+===================================== */
 
 .btn-if {
+    color: var(--if-branco);
     background-color: var(--if-verde);
-    color: var(--if-branco);
-    border: none;
-}
 
-.btn-if:hover {
-    background-color: var(--if-verde-escuro);
-    color: var(--if-branco);
-}
-
-.btn-if-outline {
-    color: var(--if-verde);
     border: 1px solid var(--if-verde);
 }
 
-.btn-if-outline:hover {
-    background-color: var(--if-verde);
+.btn-if:hover,
+.btn-if:focus,
+.btn-if:active {
     color: var(--if-branco);
+    background-color: var(--if-verde-escuro);
+
+    border-color: var(--if-verde-escuro);
 }
 
-.badge-if {
-    background-color: var(--if-verde);
+.btn-if-outline {
+    color: var(--if-verde-escuro);
+    background-color: transparent;
+
+    border: 1px solid var(--if-verde);
+}
+
+.btn-if-outline:hover,
+.btn-if-outline:focus,
+.btn-if-outline:active {
     color: var(--if-branco);
+    background-color: var(--if-verde);
+
+    border-color: var(--if-verde);
+}
+
+/* =====================================
+   CARDS, BADGES E TABELAS
+===================================== */
+
+.badge-if {
+    color: var(--if-branco);
+    background-color: var(--if-verde);
 }
 
 .card-if {
+    overflow: hidden;
+
+    border: 1px solid var(--if-cinza-borda);
     border-top: 4px solid var(--if-verde);
+}
+
+.card-if .card-header {
+    background-color: #f8faf8;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.tabela-acoes {
+    min-width: 175px;
+}
+
+.lista-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+}
+
+/* =====================================
+   RODAPÉ
+===================================== */
+
+.rodape-site {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: var(--if-verde-escuro);
+
+    border-top: 5px solid var(--if-verde-claro);
+}
+
+.rodape-site small {
+    display: block;
+}
+
+/* =====================================
+   RESPONSIVIDADE
+===================================== */
+
+@media (max-width: 991.98px) {
+
+    .faixa-navegacao {
+        padding: 7px 0;
+    }
+
+    .faixa-navegacao .nav-link,
+    .faixa-navegacao .nav-link.active,
+    .faixa-navegacao .nav-link.show {
+        padding: 11px 12px;
+    }
+
+    .usuario-sessao {
+        width: 100%;
+
+        margin-top: 5px;
+        padding: 12px;
+
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+}
+
+@media (max-width: 575.98px) {
+
+    .marca-institucional {
+        gap: 12px;
+    }
+
+    .caixa-logo {
+        width: 72px;
+        height: 67px;
+
+        padding: 6px;
+    }
+
+    .logo-if {
+        height: 55px;
+    }
+
+    .nome-instituicao {
+        font-size: 1.08rem;
+    }
+
+    .nome-campus {
+        font-size: 0.92rem;
+    }
+
+    .nome-servico {
+        margin-top: 5px;
+        font-size: 0.7rem;
+    }
+
 }
