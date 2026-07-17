@@ -5,10 +5,6 @@ from .models import Setor, Pessoa, Usuario
 from django.db.models import Q
 from django.urls import reverse
 
-def listar_setores(request):
-    setores = Setor.objects.all()
-    return render(request, 'ramais/listar_setores.html', {'lista_setores': setores})
-
 def gerenciar_ramais(request):
     return render(request, 'ramais/gerenciar_ramais.html')
 
@@ -79,8 +75,24 @@ def cadastrar_setores(request):
     return render(request, "ramais/gerenciar_ramais.html")
 
 def ver_setores(request):
-    setores = Setor.objects.all()
-    return render(request, 'ramais/ver_setores.html', {'lista_setores': setores})
+    busca = request.GET.get("q", "").strip()
+
+    setores = Setor.objects.all().order_by("nome")
+
+    if busca:
+        setores = setores.filter(
+            Q(nome__icontains=busca)
+            | Q(email__icontains=busca)
+            | Q(ramal__icontains=busca)
+        )
+
+    return render(
+        request,
+        "ramais/ver_setores.html",
+        {
+            "lista_setores": setores
+        }
+    )
 
 
 #CRUDs
@@ -233,38 +245,65 @@ def cadastrar_pessoa(request):
 
 def editar_pessoa(request, id):
     pessoa = get_object_or_404(Pessoa, id=id)
-    setores = Setor.objects.all()
 
     if request.method == "POST":
         nome = request.POST.get("nome", "").strip()
         email = request.POST.get("email", "").strip()
-        ramal = request.POST.get("ramal", "").strip()
-        setor_id = request.POST.get("setor")
-        
-        if not nome or not ramal or not setor_id:
-            messages.error(request, "Nome, Ramal e Setor são obrigatórios!")
-            return render(request, "ramais/editar_pessoa.html", {'pessoa': pessoa, 'setores': setores})
-            
-        if len(ramal) != 4:
-            messages.error(request, "O ramal deve ter exatamente 4 dígitos!")
-            return render(request, "ramais/editar_pessoa.html", {'pessoa': pessoa, 'setores': setores})
 
-        if Pessoa.objects.filter(ramal=ramal).exclude(id=id).exists():
-            messages.error(request, "Este ramal já está em uso!")
-            return render(request, "ramais/editar_pessoa.html", {'pessoa': pessoa, 'setores': setores})
+        contexto = {
+            "pessoa": pessoa,
+            "nome": nome,
+            "email": email,
+        }
 
-        setor_selecionado = get_object_or_404(Setor, id=setor_id)
+        if not nome or not email:
+            messages.error(
+                request,
+                "Nome e e-mail são obrigatórios."
+            )
+
+            return render(
+                request,
+                "ramais/editar_pessoa.html",
+                contexto
+            )
+
+        email_ja_utilizado = Pessoa.objects.filter(
+            email__iexact=email
+        ).exclude(
+            id=id
+        ).exists()
+
+        if email_ja_utilizado:
+            messages.error(
+                request,
+                "Este e-mail já está cadastrado para outra pessoa."
+            )
+
+            return render(
+                request,
+                "ramais/editar_pessoa.html",
+                contexto
+            )
+
         pessoa.nome = nome
         pessoa.email = email
-        pessoa.ramal = ramal
-        pessoa.setor = setor_selecionado
-        
         pessoa.save()
-        
-        messages.success(request, "Contato atualizado com sucesso!")
+
+        messages.success(
+            request,
+            "Pessoa atualizada com sucesso!"
+        )
+
         return redirect("listar_pessoas")
 
-    return render(request, "ramais/editar_pessoa.html", {'pessoa': pessoa, 'setores': setores})
+    return render(
+        request,
+        "ramais/editar_pessoa.html",
+        {
+            "pessoa": pessoa
+        }
+    )
 
 def deletar_pessoa(request, id):
     if request.method == "POST":
