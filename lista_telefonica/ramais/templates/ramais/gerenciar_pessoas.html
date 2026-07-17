@@ -1,90 +1,46 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'ramais/base.html' %}
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IFMG - Lista de Ramais | Gerenciar Pessoas</title>
-  
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
-  
-  <!-- CSS personalizado -->
-  <link rel="stylesheet" href="{% static 'ramais/css/style.css' %}" />
-</head>
+{% block title %}
+  IFMG - Lista de Ramais | Cadastrar Pessoa
+{% endblock %}
 
-<body>
-  <!-- Barra de navegação -->
-  <nav class="navbar navbar-expand-lg navbar-dark navbar-if">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'index' %}">
-        <img src="{% static 'ramais/img/logo-if.png' %}" alt="Logo" class="logo-if" />
-        <span class="fw-bold">IFMG Campus São João Evangelista</span>
-      </a>
+{% block content %}
+  <section class="mb-4">
+    <span class="badge badge-if mb-3">Pessoas</span>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavbar"
-        aria-controls="menuNavbar" aria-expanded="false" aria-label="Abrir menu de navegação">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <h1 class="fw-bold">Cadastrar pessoa</h1>
 
-      <div class="collapse navbar-collapse justify-content-end" id="menuNavbar">
-        <div class="navbar-nav gap-2">
-          <a href="{% url 'index' %}" class="btn btn-outline-light btn-sm">Início</a>
-          <a href="{% url 'listar_setores' %}" class="btn btn-outline-light btn-sm">Setores</a>
-          <a href="{% url 'listar_pessoas' %}" class="btn btn-outline-light btn-sm">Pessoas</a>
+    <p class="text-muted">Cadastre um servidor ou funcionário no sistema. O vínculo com setores é feito na área de vínculos.</p>
+  </section>
+
+  <section class="card card-if shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-4">Dados da pessoa</h5>
+
+      <form method="post" action="{% url 'cadastrar_pessoa' %}">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome completo</label>
+
+          <input type="text" id="nome" name="nome" class="form-control" value="{{ nome|default:'' }}" placeholder="Ex.: João da Silva" />
         </div>
-      </div>
+
+        <div class="mb-4">
+          <label for="email" class="form-label">E-mail corporativo</label>
+
+          <input type="email" id="email" name="email" class="form-control" value="{{ email|default:'' }}" placeholder="Ex.: joao@ifmg.edu.br" />
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+          <button type="submit" class="btn btn-if">
+            <i class="bi bi-person-plus me-1"></i>
+            Salvar pessoa
+          </button>
+
+          <a href="{% url 'listar_pessoas' %}" class="btn btn-if-outline">Ver pessoas</a>
+        </div>
+      </form>
     </div>
-  </nav>
-
-  <main class="container my-5">
-    <section class="mb-4">
-      <span class="badge badge-if mb-3">Recursos Humanos</span>
-      <h1 class="fw-bold">Cadastrar Pessoas</h1>
-    </section>
-
-    <section class="card card-if shadow-sm">
-      {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        {% endfor %}
-      {% endif %}
-
-      <div class="card-body">
-        <h5 class="card-title mb-4">Dados do Servidor / Funcionário</h5>
-
-        <form method="post" action="{% url 'cadastrar_pessoa' %}">
-          {% csrf_token %}
-
-          <div class="mb-3">
-            <label class="form-label">Nome Completo</label>
-            <input type="text" name="nome" class="form-control" placeholder="Ex: João da Silva">
-          </div>
-
-          <div class="mb-4">
-            <label class="form-label">E-mail Corporativo</label>
-            <input type="email" name="email" class="form-control" placeholder="Ex: joao@ifmg.edu.br">
-          </div>
-
-          <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-if">Salvar Funcionário</button>
-            <a href="{% url 'listar_pessoas' %}" class="btn btn-if-outline">Voltar para Pessoas</a>
-          </div>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <!-- Rodapé-->
-  <footer class="text-center text-muted py-4">
-    <small>Bolsa Futuro Digital - CEPEDI - Curso Python</small>
-  </footer>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+  </section>
+{% endblock %}
