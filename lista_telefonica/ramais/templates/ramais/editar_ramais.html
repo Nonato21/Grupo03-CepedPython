@@ -1,164 +1,64 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'ramais/base.html' %}
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IFMG - Lista de Ramais | Gerenciar Ramais</title>
+{% block title %}
+  IFMG - Lista de Ramais | Editar Setor
+{% endblock %}
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+{% block content %}
+  <section class="mb-4">
+    <span class="badge badge-if mb-3">Administração</span>
 
-  <!-- CSS personalizado -->
-  <link rel="stylesheet" href="{% static 'ramais/css/style.css' %}" />
+    <h1 class="fw-bold">Editar setor e ramal</h1>
 
-  <!-- Favicon -->
-  <link rel="icon" href="{% static 'ramais/img/favicon.ico' %}?v=2" type="image/x-icon" />
-  <link rel="shortcut icon" href="{% static 'ramais/img/favicon.ico' %}?v=2" type="image/x-icon" />
-</head>
+    <p class="text-muted">Atualize as informações do setor selecionado.</p>
+  </section>
 
-<body>
-  <!-- Barra de navegação -->
-  <nav class="navbar navbar-expand-lg navbar-dark navbar-if">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'index' %}">
-        <img src="{% static 'ramais/img/logo-if.png' %}" alt="Logo do Instituto Federal" class="logo-if" />
-        <span class="fw-bold">IFMG Campus São João Evangelista - Lista de Ramais</span>
-      </a>
+  <section class="card card-if shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-4">Atualização do setor</h5>
 
-      <!-- Botão do menu em telas pequenas -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavbar"
-        aria-controls="menuNavbar" aria-expanded="false" aria-label="Abrir menu de navegação">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <form method="post" action="{% url 'editar_setores' setor.id %}">
+        {% csrf_token %}
 
-      <!-- Links da navbar -->
-      <div class="collapse navbar-collapse justify-content-end" id="menuNavbar">
-        <div class="navbar-nav gap-2">
-          <a href="{% url 'index' %}" class="btn btn-outline-light btn-sm">
-            Início
-          </a>
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome do setor</label>
 
-          <a href="{% url 'listar_setores' %}" class="btn btn-outline-light btn-sm">
-            Setores
-          </a>
+          <input type="text" id="nome" name="nome" class="form-control {% if erro_nome %}is-invalid{% endif %}" value="{{ nome|default:setor.nome }}" />
 
-          <a href="{% url 'gerenciar_ramais' %}" class="btn btn-light btn-sm">
-            Gerenciar
-          </a>
+          {% if erro_nome %}
+            <div class="invalid-feedback">{{ erro_nome }}</div>
+          {% endif %}
         </div>
-      </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">E-mail do setor</label>
+
+          <input type="email" id="email" name="email" class="form-control {% if erro_email %}is-invalid{% endif %}" value="{{ email|default:setor.email }}" />
+
+          {% if erro_email %}
+            <div class="invalid-feedback">{{ erro_email }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-4">
+          <label for="ramal" class="form-label">Ramal</label>
+
+          <input type="text" id="ramal" name="ramal" class="form-control {% if erro_ramal %}is-invalid{% endif %}" value="{{ ramal|default:setor.ramal }}" maxlength="4" inputmode="numeric" />
+
+          {% if erro_ramal %}
+            <div class="invalid-feedback">{{ erro_ramal }}</div>
+          {% endif %}
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+          <button type="submit" class="btn btn-if">
+            <i class="bi bi-floppy me-1"></i>
+            Salvar alterações
+          </button>
+
+          <a href="{% url 'listar_setores' %}" class="btn btn-if-outline">Cancelar</a>
+        </div>
+      </form>
     </div>
-  </nav>
-
-  <!-- Conteúdo principal -->
-  <main class="container my-5">
-    <!-- Cabeçalho da página -->
-    <section class="mb-4">
-      <span class="badge badge-if mb-3">Administração</span>
-
-      <h1 class="fw-bold">
-        Editar Ramais
-      </h1>
-
-      <p class="text-muted">
-        Atualize as informações dos setores e seus respectivos ramais.
-      </p>
-    </section>
-
-    <!-- Card do formulário -->
-    <section class="card card-if shadow-sm">
-
-      <!-- mensagem de sucesso caso o usuário cadastre o setor -->
-      {% if messages %}
-      {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert">
-        </button>
-      </div>
-      {% endfor %}
-      {% endif %}
-
-      <div class="card-body">
-        <h5 class="card-title mb-4">
-          Atualização de Setor
-        </h5>
-
-        <!-- Form para atualizar os dados-->
-        <form method="post" action="{% url 'editar_setores'  setor.id %}">
-          {% csrf_token %}
-
-          <!-- Mensagens de erro caso o usuário não preencha o campo do nome corretamente -->
-          <div class="mb-3">
-            <label class="form-label">Nome do Setor</label>
-
-            <input type="text" id="nome" name="nome" class="form-control {% if erro_nome %}is-invalid{% endif %}"
-              value="{{ nome|default:setor.nome }}" placeholder="Ex: Tecnologia da informação">
-
-            {% if erro_nome %}
-            <div class="invalid-feedback">
-              {{ erro_nome }}
-            </div>
-            {% endif %}
-          </div>
-
-          <!-- Mensagens de erro caso o usuário não preencha o campo do e-mail corretamente -->
-          <div class="mb-3">
-            <label for="email" class="form-label">
-              E-mail do Setor
-            </label>
-
-            <input type="email" id="email" name="email" class="form-control {% if erro_email %}is-invalid{% endif %}"
-              value="{{ email|default:setor.email }}" placeholder="Ex: setor@ifmg.edu.br">
-
-            {% if erro_email %}
-            <div class="invalid-feedback">
-              {{ erro_email }}
-            </div>
-            {% endif %}
-          </div>
-
-
-          <!-- Mensagens de erro caso o usuário não preencha o campo do ramal corretamente -->
-          <div class="mb-4">
-            <label for="ramal" class="form-label">
-              Ramal
-            </label>
-            <input type="text" id="ramal" name="ramal" class="form-control {% if erro_ramal %}is-invalid{% endif %}"
-              value="{{ ramal|default:setor.ramal }}" placeholder="Ex: 2942" />
-            {% if erro_ramal %}
-            <div class="invalid-feedback">
-              {{ erro_ramal }}
-            </div>
-            {% endif %}
-
-          </div>
-
-          <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-if">
-              Salvar alterações
-            </button>
-
-            <a href="{% url 'listar_setores' %}" class="btn btn-if-outline">
-              Voltar para Setores
-            </a>
-          </div>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <!-- Rodapé -->
-  <footer class="text-center text-muted py-4">
-    <small>
-      Bolsa Futuro Digital - CEPEDI - Curso Python
-    </small>
-  </footer>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+  </section>
+{% endblock %}
