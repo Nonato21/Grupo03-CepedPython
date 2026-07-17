@@ -19,9 +19,12 @@ urlpatterns = [
     path('pessoas/excluir/<int:id>/', views.deletar_pessoa, name='deletar_pessoa'),
 
     # usuarios
-    path('usuarios/listar/', views.listar_usuarios, name='listar_usuarios'),
-    path('usuarios/cadastrar/', views.cadastrar_usuario, name='gerenciar_usuarios'),
-
-    path('vinculos/gerenciar/', views.gerenciar_vinculos, name='gerenciar_vinculos'),
-    path('vinculos/adicionar/', views.adicionar_vinculo, name='adicionar_vinculo'),
+    path('usuarios/listar/',views.listar_usuarios,name='listar_usuarios',),
+    path('usuarios/cadastrar/',views.cadastrar_usuario,name='gerenciar_usuarios',),
+    path('usuarios/editar/<int:id>/',views.editar_usuario,name='editar_usuario',),
+    path('usuarios/excluir/<int:id>/',views.deletar_usuario,name='deletar_usuario',),
+    
+    # vinculos
+    path("vinculos/gerenciar/",views.gerenciar_vinculos,name="gerenciar_vinculos",),
+    path("vinculos/adicionar/",views.adicionar_vinculo,name="adicionar_vinculo",),
 ]
