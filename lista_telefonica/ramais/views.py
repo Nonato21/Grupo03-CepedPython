@@ -370,6 +370,154 @@ def cadastrar_usuario(request):
 
     return render(request, 'ramais/gerenciar_usuarios.html')
 
+def editar_usuario(request, id):
+    usuario = get_object_or_404(Usuario, id=id)
+
+    contexto = {
+        "usuario": usuario,
+        "nome": usuario.nome,
+        "email": usuario.email,
+        "status_usuario": usuario.status_usuario,
+        "nivel_acesso": usuario.nivel_acesso,
+    }
+
+    if request.method == "POST":
+        nome = request.POST.get("nome", "").strip()
+        email = request.POST.get("email", "").strip()
+        senha = request.POST.get("senha", "")
+        confirmar_senha = request.POST.get(
+            "confirmar_senha",
+            "",
+        )
+        status_usuario = request.POST.get(
+            "status_usuario",
+            "",
+        ).strip()
+        nivel_acesso = request.POST.get(
+            "nivel_acesso",
+            "",
+        ).strip()
+
+        contexto.update({
+            "nome": nome,
+            "email": email,
+            "status_usuario": status_usuario,
+            "nivel_acesso": nivel_acesso,
+        })
+
+        if not nome or not email:
+            messages.error(
+                request,
+                "Nome e e-mail são obrigatórios!",
+            )
+
+            return render(
+                request,
+                "ramais/editar_usuario.html",
+                contexto,
+            )
+
+        email_em_uso = Usuario.objects.filter(
+            email__iexact=email
+        ).exclude(
+            id=id
+        ).exists()
+
+        if email_em_uso:
+            messages.error(
+                request,
+                "Este e-mail já está em uso por outro usuário!",
+            )
+
+            return render(
+                request,
+                "ramais/editar_usuario.html",
+                contexto,
+            )
+
+        if status_usuario not in {"Ativo", "Inativo"}:
+            messages.error(
+                request,
+                "Status de usuário inválido!",
+            )
+
+            return render(
+                request,
+                "ramais/editar_usuario.html",
+                contexto,
+            )
+
+        niveis_validos = {
+            "Administrador",
+            "Usuário padrão",
+        }
+
+        if nivel_acesso not in niveis_validos:
+            messages.error(
+                request,
+                "Nível de acesso inválido!",
+            )
+
+            return render(
+                request,
+                "ramais/editar_usuario.html",
+                contexto,
+            )
+
+        if senha or confirmar_senha:
+
+            if senha != confirmar_senha:
+                messages.error(
+                    request,
+                    "As senhas não coincidem!",
+                )
+
+                return render(
+                    request,
+                    "ramais/editar_usuario.html",
+                    contexto,
+                )
+
+            usuario.senha = senha
+
+        usuario.nome = nome
+        usuario.email = email
+        usuario.status_usuario = status_usuario
+        usuario.nivel_acesso = nivel_acesso
+
+        usuario.save()
+
+        messages.success(
+            request,
+            f"Usuário '{nome}' atualizado com sucesso!",
+        )
+
+        return redirect("listar_usuarios")
+
+    return render(
+        request,
+        "ramais/editar_usuario.html",
+        contexto,
+    )
+
+def deletar_usuario(request, id):
+    if request.method == "POST":
+        usuario = get_object_or_404(
+            Usuario,
+            id=id,
+        )
+
+        nome = usuario.nome
+
+        usuario.delete()
+
+        messages.success(
+            request,
+            f"Usuário '{nome}' excluído com sucesso!",
+        )
+
+    return redirect("listar_usuarios")
+
 # VINCULOS
 def gerenciar_vinculos(request):
     lista_setores = Setor.objects.all().order_by('nome')
