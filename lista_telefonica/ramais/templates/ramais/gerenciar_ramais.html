@@ -1,64 +1,68 @@
 {% extends 'ramais/base.html' %}
 
 {% block title %}
-  IFMG - Lista de Ramais | Cadastrar Setor
+IFMG - Lista de Ramais | Cadastrar Setor
 {% endblock %}
 
 {% block content %}
-  <section class="mb-4">
-    <span class="badge badge-if mb-3">Administração</span>
+<section class="mb-4">
+  <span class="badge badge-if mb-3">Administração</span>
 
-    <h1 class="fw-bold">Cadastrar setor e ramal</h1>
+  <h1 class="fw-bold">Cadastrar setor e ramal</h1>
 
-    <p class="text-muted">Cadastre as informações de um setor e seu respectivo ramal.</p>
-  </section>
+  <p class="text-muted">Cadastre as informações de um setor e seu respectivo ramal.</p>
+</section>
 
-  <section class="card card-if shadow-sm">
-    <div class="card-body">
-      <h5 class="card-title mb-4">Dados do setor</h5>
+<section class="card card-if shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title mb-4">Dados do setor</h5>
 
-      <form method="post" action="{% url 'cadastrar_setores' %}">
-        {% csrf_token %}
+    <form method="post" action="{% url 'cadastrar_setores' %}">
+      {% csrf_token %}
 
-        <div class="mb-3">
-          <label for="nome" class="form-label">Nome do setor</label>
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome do setor</label>
 
-          <input type="text" id="nome" name="nome" class="form-control {% if erro_nome %}is-invalid{% endif %}" value="{{ nome|default:'' }}" placeholder="Ex.: Tecnologia da Informação" />
+        <input type="text" id="nome" name="nome" class="form-control {% if erro_nome %}is-invalid{% endif %}"
+          value="{{ nome|default:'' }}" placeholder="Ex.: Tecnologia da Informação" />
 
-          {% if erro_nome %}
-            <div class="invalid-feedback">{{ erro_nome }}</div>
-          {% endif %}
-        </div>
+        {% if erro_nome %}
+        <div class="invalid-feedback">{{ erro_nome }}</div>
+        {% endif %}
+      </div>
 
-        <div class="mb-3">
-          <label for="email" class="form-label">E-mail do setor</label>
+      <div class="mb-3">
+        <label for="email" class="form-label">E-mail do setor</label>
 
-          <input type="email" id="email" name="email" class="form-control {% if erro_email %}is-invalid{% endif %}" value="{{ email|default:'' }}" placeholder="Ex.: setor@ifmg.edu.br" />
+        <input type="email" id="email" name="email" class="form-control {% if erro_email %}is-invalid{% endif %}"
+          value="{{ email|default:'' }}" placeholder="Ex.: setor@ifmg.edu.br" />
 
-          {% if erro_email %}
-            <div class="invalid-feedback">{{ erro_email }}</div>
-          {% endif %}
-        </div>
+        {% if erro_email %}
+        <div class="invalid-feedback">{{ erro_email }}</div>
+        {% endif %}
+      </div>
 
-        <div class="mb-4">
-          <label for="ramal" class="form-label">Ramal</label>
+      <div class="mb-4">
+        <label for="ramal" class="form-label">Ramal</label>
 
-          <input type="text" id="ramal" name="ramal" class="form-control {% if erro_ramal %}is-invalid{% endif %}" value="{{ ramal|default:'' }}" placeholder="Ex.: 2942" maxlength="4" inputmode="numeric" />
+        <input type="text" id="ramal" name="ramal" class="form-control {% if erro_ramal %}is-invalid{% endif %}"
+          value="{{ ramal|default:'' }}" placeholder="Ex.: 2942" maxlength="4" inputmode="numeric" />
 
-          {% if erro_ramal %}
-            <div class="invalid-feedback">{{ erro_ramal }}</div>
-          {% endif %}
-        </div>
+        {% if erro_ramal %}
+        <div class="invalid-feedback">{{ erro_ramal }}</div>
+        {% endif %}
+      </div>
 
-        <div class="d-flex flex-wrap gap-2">
-          <button type="submit" class="btn btn-if">
-            <i class="bi bi-floppy me-1"></i>
-            Salvar setor
-          </button>
+      <div class="d-flex flex-wrap gap-2">
+        <button type="submit" class="btn btn-if">
+          <i class="bi bi-floppy me-1"></i>
+          Salvar setor
+        </button>
 
-          <a href="{% url 'listar_setores' %}" class="btn btn-if-outline">Ver setores</a>
-        </div>
-      </form>
-    </div>
-  </section>
+        <a href="{% url 'listar_setores' %}" class="btn btn-if-outline">Ver setores</a>
+        
+      </div>
+    </form>
+  </div>
+</section>
 {% endblock %}

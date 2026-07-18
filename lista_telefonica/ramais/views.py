@@ -1,10 +1,16 @@
 # Create your views here.
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Setor, Pessoa, Usuario
 from django.db.models import Q
 from django.urls import reverse
-
+from django.http import HttpResponse
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Paragraph
+from reportlab.lib.enums import TA_CENTER
+from .models import Setor, Pessoa, Usuario
 def gerenciar_ramais(request):
     return render(request, 'ramais/gerenciar_ramais.html')
 
@@ -561,3 +567,228 @@ def adicionar_vinculo(request):
             return redirect(url_retorno)
             
     return redirect('gerenciar_vinculos')
+
+def exportar_setores_pdf(request):
+    # Receber resposta em HTTP
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = 'attachament; filename="listagem_setores.pdf"'
+    
+    #documento PDF
+    pdf= SimpleDocTemplate(response, pagesize=A4)
+    
+    elementos = []
+    
+    #titulo do PDF
+    
+    estilos = getSampleStyleSheet()
+    
+    titulo = estilos["Heading1"]
+    titulo.alignment = TA_CENTER
+    
+    elementos.append(Paragraph("IFMG - Campus São João Evangelista", titulo))
+    elementos.append(Paragraph("Lista de ramais", titulo))
+    elementos.append(Paragraph("<br/><br/>", titulo))
+    
+    
+    #passando os dados
+    
+    dados = []
+    
+    dados.append([
+        "ID",
+        "Nome",
+        "E-mail",
+        "Ramal"
+    ])
+    
+    setores = Setor.objects.all()
+    
+    for setor in setores:
+        
+        dados.append([
+            setor.id,
+            setor.nome,
+            setor.email,
+            setor.ramal
+        ])
+
+    #criar a tabela
+    
+    tabela = Table(dados)
+    
+    tabela.setStyle(TableStyle([
+
+        ("BACKGROUND",(0,0),(-1,0),colors.darkgreen),
+
+        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
+
+        ("ALIGN",(0,0),(-1,-1),"CENTER"),
+
+        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
+
+        ("BOTTOMPADDING",(0,0),(-1,0),12),
+
+        ("GRID",(0,0),(-1,-1),1,colors.black),
+
+        ("BACKGROUND",(0,1),(-1,-1),colors.beige)
+
+    ]))
+
+    elementos.append(tabela)
+
+    pdf.build(elementos)
+
+    return response
+
+
+def exportar_pessoas_pdf(request):
+    # Receber resposta em HTTP
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = 'attachament; filename="listagem_pessoas.pdf"'
+    
+    #documento PDF
+    pdf= SimpleDocTemplate(response, pagesize=A4)
+    
+    elementos = []
+    
+    #titulo do PDF
+    
+    estilos = getSampleStyleSheet()
+    
+    titulo = estilos["Heading1"]
+    titulo.alignment = TA_CENTER
+    
+    elementos.append(Paragraph("IFMG - Campus São João Evangelista", titulo))
+    elementos.append(Paragraph("Lista de ramais", titulo))
+    elementos.append(Paragraph("<br/><br/>", titulo))
+    
+    
+    #passando os dados
+    
+    dados = []
+    
+    dados.append([
+        "ID",
+        "Nome",
+        "E-mail",
+        "Setor Vinculado"
+    ])
+    
+    pessoas = Pessoa.objects.all()
+
+    for pessoa in pessoas:
+
+        setores = ", ".join(
+            setor.nome for setor in pessoa.setores.all()
+        )
+
+        dados.append([
+            pessoa.id,
+            pessoa.nome,
+            pessoa.email,
+            setores
+        ])
+
+    #criar a tabela
+    
+    tabela = Table(dados)
+    
+    tabela.setStyle(TableStyle([
+
+        ("BACKGROUND",(0,0),(-1,0),colors.darkgreen),
+
+        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
+
+        ("ALIGN",(0,0),(-1,-1),"CENTER"),
+
+        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
+
+        ("BOTTOMPADDING",(0,0),(-1,0),12),
+
+        ("GRID",(0,0),(-1,-1),1,colors.black),
+
+        ("BACKGROUND",(0,1),(-1,-1),colors.beige)
+
+    ]))
+
+    elementos.append(tabela)
+
+    pdf.build(elementos)
+
+    return response
+
+
+def exportar_usuarios_pdf(request):
+    # Receber resposta em HTTP
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = 'attachament; filename="listagem_usuarios.pdf"'
+    
+    #documento PDF
+    pdf= SimpleDocTemplate(response, pagesize=A4)
+    
+    elementos = []
+    
+    #titulo do PDF
+    
+    estilos = getSampleStyleSheet()
+    
+    titulo = estilos["Heading1"]
+    titulo.alignment = TA_CENTER
+    
+    elementos.append(Paragraph("IFMG - Campus São João Evangelista", titulo))
+    elementos.append(Paragraph("Lista de pessoas", titulo))
+    elementos.append(Paragraph("<br/><br/>", titulo))
+    
+    
+    #passando os dados
+    
+    dados = []
+    
+    dados.append([
+        "ID",
+        "Nome",
+        "E-mail",
+        "Status",
+        "Nível"
+    ])
+    
+    usuarios = Usuario.objects.all()
+    
+    for usuario in usuarios:
+        
+        dados.append([
+            usuario.id,
+            usuario.nome,
+            usuario.email,
+            usuario.status_usuario,
+            usuario.nivel_acesso
+            
+        ])
+
+    #criar a tabela
+    
+    tabela = Table(dados)
+    
+    tabela.setStyle(TableStyle([
+
+        ("BACKGROUND",(0,0),(-1,0),colors.darkgreen),
+
+        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
+
+        ("ALIGN",(0,0),(-1,-1),"CENTER"),
+
+        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
+
+        ("BOTTOMPADDING",(0,0),(-1,0),12),
+
+        ("GRID",(0,0),(-1,-1),1,colors.black),
+
+        ("BACKGROUND",(0,1),(-1,-1),colors.beige)
+
+    ]))
+
+    elementos.append(tabela)
+
+    pdf.build(elementos)
+
+    return response
