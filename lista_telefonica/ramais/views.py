@@ -659,7 +659,7 @@ def exportar_pessoas_pdf(request):
     titulo.alignment = TA_CENTER
     
     elementos.append(Paragraph("IFMG - Campus São João Evangelista", titulo))
-    elementos.append(Paragraph("Lista de ramais", titulo))
+    elementos.append(Paragraph("Lista de pessoas", titulo))
     elementos.append(Paragraph("<br/><br/>", titulo))
     
     
@@ -736,7 +736,7 @@ def exportar_usuarios_pdf(request):
     titulo.alignment = TA_CENTER
     
     elementos.append(Paragraph("IFMG - Campus São João Evangelista", titulo))
-    elementos.append(Paragraph("Lista de pessoas", titulo))
+    elementos.append(Paragraph("Lista de usuários", titulo))
     elementos.append(Paragraph("<br/><br/>", titulo))
     
     
