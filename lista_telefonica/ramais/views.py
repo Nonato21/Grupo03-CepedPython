@@ -571,7 +571,7 @@ def adicionar_vinculo(request):
 def exportar_setores_pdf(request):
     # Receber resposta em HTTP
     response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = 'attachament; filename="listagem_setores.pdf"'
+    response["Content-Disposition"] = 'attachment; filename="listagem_setores.pdf"'
     
     #documento PDF
     pdf= SimpleDocTemplate(response, pagesize=A4)
@@ -644,7 +644,7 @@ def exportar_setores_pdf(request):
 def exportar_pessoas_pdf(request):
     # Receber resposta em HTTP
     response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = 'attachament; filename="listagem_pessoas.pdf"'
+    response["Content-Disposition"] = 'attachment; filename="listagem_pessoas.pdf"'
     
     #documento PDF
     pdf= SimpleDocTemplate(response, pagesize=A4)
@@ -721,7 +721,7 @@ def exportar_pessoas_pdf(request):
 def exportar_usuarios_pdf(request):
     # Receber resposta em HTTP
     response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = 'attachament; filename="listagem_usuarios.pdf"'
+    response["Content-Disposition"] = 'attachment; filename="listagem_usuarios.pdf"'
     
     #documento PDF
     pdf= SimpleDocTemplate(response, pagesize=A4)
