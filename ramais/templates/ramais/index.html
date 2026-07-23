@@ -1,0 +1,107 @@
+{% extends 'ramais/base.html' %}
+
+{% block title %}
+  IFMG - Lista de Ramais | Página Inicial
+{% endblock %}
+
+{% block content %}
+  <section class="text-center mb-5">
+    <span class="badge badge-if mb-3">Sistema Institucional</span>
+
+    <h1 class="display-5 fw-bold">
+      Lista Telefônica
+
+      <br />
+
+      IFMG Campus São João Evangelista
+    </h1>
+
+    <p class="lead text-muted">Consulte e gerencie ramais, setores, pessoas, usuários e vínculos em um só lugar.</p>
+
+    <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
+      <a href="{% url 'ver_setores' %}" class="btn btn-if btn-lg">
+        <i class="bi bi-telephone me-1"></i>
+        Ver ramais
+      </a>
+
+      <a href="{% url 'gerenciar_vinculos' %}" class="btn btn-if-outline btn-lg">
+        <i class="bi bi-diagram-3 me-1"></i>
+        Gerenciar vínculos
+      </a>
+    </div>
+  </section>
+
+  <section class="row g-4">
+    <div class="col-md-6 col-xl-4">
+      <div class="card card-if shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Consulta de ramais</h5>
+
+          <p class="card-text text-muted">Encontre setores, e-mails e ramais cadastrados.</p>
+
+          <a href="{% url 'ver_setores' %}" class="btn btn-if">Consultar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card card-if shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Gerenciamento de setores</h5>
+
+          <p class="card-text text-muted">Cadastre, edite e exclua setores e seus respectivos ramais.</p>
+
+          <a href="{% url 'listar_setores' %}" class="btn btn-if">Gerenciar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card card-if shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Pessoas</h5>
+
+          <p class="card-text text-muted">Consulte e mantenha os contatos de servidores e funcionários.</p>
+
+          <a href="{% url 'listar_pessoas' %}" class="btn btn-if">Ver pessoas</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card card-if shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Vínculos</h5>
+
+          <p class="card-text text-muted">Vincule pessoas aos setores em que elas trabalham.</p>
+
+          <a href="{% url 'gerenciar_vinculos' %}" class="btn btn-if">Gerenciar vínculos</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card card-if shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Usuários</h5>
+
+          <p class="card-text text-muted">Consulte os usuários cadastrados para acessar o sistema.</p>
+
+          <a href="{}" class="btn btn-if">Ver usuários</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+      <div class="card card-if shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Novo cadastro</h5>
+
+          <p class="card-text text-muted">Acesse rapidamente a área de cadastro de pessoas.</p>
+
+          <a href="{% url 'gerenciar_pessoas' %}" class="btn btn-if">Cadastrar pessoa</a>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
