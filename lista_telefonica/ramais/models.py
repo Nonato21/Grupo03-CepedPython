@@ -1,29 +1,28 @@
 from django.db import models
+from django.core.validators import RegexValidator
 
 class Setor(models.Model):
-    nome = models.CharField(max_length=200)
-    email = models.EmailField(max_length=200)
-    ramal = models.CharField(max_length=10)
-    text_alter = models.CharField(max_length=150, null=True, blank=True)
+    nome = models.CharField(max_length=100, unique=True)
+    email = models.EmailField(unique=True)
+    
+    ramal = models.CharField(
+        max_length=4,
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\d{4}$',
+                message='O ramal deve conter exatamente 4 números.'
+            )
+        ]
+    )
 
     def __str__(self):
         return self.nome
 
 class Pessoa(models.Model):
-    nome = models.CharField(max_length=200)
-    email = models.EmailField(max_length=200)
-    
-    setores = models.ManyToManyField(Setor, related_name='pessoas', blank=True)
-
-    def __str__(self):
-        return self.nome
-
-class Usuario(models.Model):
-    nome = models.CharField(max_length=200)
-    email = models.EmailField(max_length=200, unique=True)
-    senha = models.CharField(max_length=255)
-    status_usuario = models.CharField(max_length=10)
-    nivel_acesso = models.CharField(max_length=20)
+    nome = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    setores = models.ManyToManyField(Setor, related_name='pessoas')
 
     def __str__(self):
         return self.nome
