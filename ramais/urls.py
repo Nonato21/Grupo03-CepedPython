@@ -27,6 +27,7 @@ urlpatterns = [
     # vinculos
     path("vinculos/gerenciar/",views.gerenciar_vinculos,name="gerenciar_vinculos"),
     path("vinculos/adicionar/",views.adicionar_vinculo,name="adicionar_vinculo"),
+    path('vinculos/remover/<int:setor_id>/<int:pessoa_id>/', views.remover_vinculo, name='remover_vinculo'),
 
     #exportar em pdf
     path("setores/exportar/pdf/", views.exportar_setores_pdf, name="exportar_setores_pdf"),

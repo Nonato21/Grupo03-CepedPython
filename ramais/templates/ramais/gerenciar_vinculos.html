@@ -7,205 +7,124 @@
 {% block content %}
 
     <section class="mb-4">
-
         <span class="badge badge-if mb-3">
             Administração
         </span>
-
         <h1 class="fw-bold">
             Gerenciar vínculos
         </h1>
-
         <p class="text-muted">
-
             Selecione um setor para visualizar e adicionar
             pessoas vinculadas.
-
         </p>
-
     </section>
 
     <section class="card card-if shadow-sm">
-
         <div class="card-body py-4">
 
             <!-- Escolha do setor -->
-            <form
-                method="get"
-                action="{% url 'gerenciar_vinculos' %}"
-                class="mb-5"
-            >
-
-                <label
-                    for="setor_id"
-                    class="form-label fw-bold"
-                >
+            <form method="get" action="{% url 'gerenciar_vinculos' %}" class="mb-5">
+                <label for="setor_id" class="form-label fw-bold">
                     Setor ou ramal
                 </label>
-
-                <select
-                    id="setor_id"
-                    name="setor_id"
-                    class="form-select"
-                    onchange="this.form.submit()"
-                >
-
+                <select id="setor_id" name="setor_id" class="form-select" onchange="this.form.submit()">
                     <option value="">
                         Escolha um setor ou ramal...
                     </option>
-
                     {% for setor in lista_setores %}
-
-                        <option
-                            value="{{ setor.id }}"
-                            {% if setor.id|stringformat:'s' == setor_selecionado %}
-                                selected
-                            {% endif %}
+                        <option 
+                            value="{{ setor.id }}" 
+                            {% if setor.id|stringformat:'s' == setor_selecionado %} selected {% endif %}
                         >
                             {{ setor.ramal }} — {{ setor.nome }}
                         </option>
-
                     {% endfor %}
-
                 </select>
-
             </form>
 
             {% if setor_selecionado %}
-
                 <!-- Pessoas já vinculadas -->
                 <div class="table-responsive text-center mb-4">
-
                     <table class="table table-striped table-hover align-middle mb-0">
-
                         <thead class="table-success">
-
                             <tr>
                                 <th>ID</th>
                                 <th>Nome</th>
                                 <th>E-mail</th>
+                                <!-- NOVA COLUNA ADICIONADA AQUI -->
+                                <th>Ações</th> 
                             </tr>
-
                         </thead>
 
                         <tbody>
-
                             {% for pessoa in pessoas_do_setor %}
-
                                 <tr>
                                     <td>{{ pessoa.id }}</td>
                                     <td>{{ pessoa.nome }}</td>
                                     <td>{{ pessoa.email }}</td>
+                                    
+                                    <!-- NOVO BOTÃO DE REMOVER ADICIONADO AQUI -->
+                                    <td>
+                                        <a href="{% url 'remover_vinculo' setor_selecionado pessoa.id %}" class="btn btn-sm btn-outline-danger shadow-sm" title="Remover vínculo">
+                                            <i class="bi bi-trash"></i> Remover
+                                        </a>
+                                    </td>
                                 </tr>
-
                             {% empty %}
-
                                 <tr>
-
-                                    <td
-                                        colspan="3"
-                                        class="text-muted py-4"
-                                    >
+                                    <!-- COLSPAN MUDOU DE 3 PARA 4 -->
+                                    <td colspan="4" class="text-muted py-4">
                                         Nenhuma pessoa vinculada a este setor.
                                     </td>
-
                                 </tr>
-
                             {% endfor %}
-
                         </tbody>
-
                     </table>
-
                 </div>
 
                 <!-- Adicionar vínculo -->
                 <div class="p-4 bg-light rounded border">
-
                     <h6 class="fw-bold mb-3">
                         Vincular pessoa a este setor
                     </h6>
 
-                    <form
-                        method="post"
-                        action="{% url 'adicionar_vinculo' %}"
-                        class="row g-2 align-items-end"
-                    >
-
+                    <form method="post" action="{% url 'adicionar_vinculo' %}" class="row g-2 align-items-end">
                         {% csrf_token %}
-
-                        <input
-                            type="hidden"
-                            name="setor_id"
-                            value="{{ setor_selecionado }}"
-                        >
-
+                        
+                        <input type="hidden" name="setor_id" value="{{ setor_selecionado }}">
+                        
                         <div class="col-md-9">
-
-                            <label
-                                for="pessoa_id"
-                                class="form-label"
-                            >
+                            <label for="pessoa_id" class="form-label">
                                 Pessoa
                             </label>
-
-                            <select
-                                id="pessoa_id"
-                                name="pessoa_id"
-                                class="form-select"
-                                required
-                            >
-
+                            <select id="pessoa_id" name="pessoa_id" class="form-select" required>
                                 <option value="">
                                     Selecione uma pessoa cadastrada...
                                 </option>
-
                                 {% for pessoa in pessoas_disponiveis %}
-
                                     <option value="{{ pessoa.id }}">
-
-                                        {{ pessoa.nome }} —
-                                        {{ pessoa.email }}
-
+                                        {{ pessoa.nome }} — {{ pessoa.email }}
                                     </option>
-
                                 {% endfor %}
-
                             </select>
-
                         </div>
 
                         <div class="col-md-3 d-grid">
-
-                            <button
-                                type="submit"
-                                class="btn btn-if"
-                            >
-                                <i class="bi bi-link-45deg me-1"></i>
-                                Adicionar vínculo
+                            <button type="submit" class="btn btn-if shadow-sm">
+                                <i class="bi bi-link-45deg me-1"></i> Adicionar vínculo
                             </button>
-
                         </div>
-
                     </form>
 
                     {% if not pessoas_disponiveis %}
-
                         <p class="text-muted small mb-0 mt-3">
-
-                            Não há outras pessoas disponíveis
-                            para vincular a este setor.
-
+                            Não há outras pessoas disponíveis para vincular a este setor.
                         </p>
-
                     {% endif %}
-
                 </div>
-
             {% endif %}
 
         </div>
-
     </section>
 
 {% endblock %}

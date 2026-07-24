@@ -411,6 +411,20 @@ def adicionar_vinculo(request):
     return redirect('gerenciar_vinculos')
 
 @login_required
+def remover_vinculo(request, setor_id, pessoa_id):
+    setor = get_object_or_404(Setor, id=setor_id)
+    pessoa = get_object_or_404(Pessoa, id=pessoa_id)
+    
+    pessoa.setores.remove(setor)
+    
+    messages.warning(request, f"O vínculo de '{pessoa.nome}' com o setor foi removido.")
+    
+    url_retorno = reverse('gerenciar_vinculos') + f'?setor_id={setor.id}'
+    return redirect(url_retorno)
+
+
+
+@login_required
 def exportar_setores_pdf(request):
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = 'attachment; filename="listagem_setores.pdf"'
