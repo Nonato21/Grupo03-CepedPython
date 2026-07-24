@@ -5,52 +5,84 @@
 {% endblock %}
 
 {% block content %}
+
     <section class="mb-4">
+
         <span class="badge badge-if mb-3">
             Administração
         </span>
+
         <h1 class="fw-bold">
             Cadastrar usuário
         </h1>
+
         <p class="text-muted">
-            Cadastre um usuário e defina seu status
-            e nível de acesso.
+
+            Crie uma nova conta para acessar
+            e administrar o sistema.
+
         </p>
+
     </section>
+
     <section class="card card-if shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title mb-4">
-                Dados do usuário
-            </h5>
+
+        <div class="card-body p-4">
+
+            <div class="alert alert-info">
+
+                <i class="bi bi-info-circle me-1"></i>
+
+                Todas as contas criadas nesta página terão
+                acesso administrativo ao site.
+
+            </div>
+
             <form
                 method="post"
                 action="{% url 'gerenciar_usuarios' %}"
             >
+
                 {% csrf_token %}
+
+                <!-- Usuário e e-mail -->
                 <div class="row g-3 mb-3">
+
                     <div class="col-md-6">
+
                         <label
-                            for="nome"
+                            for="username"
                             class="form-label"
                         >
-                            Nome
+                            Nome de usuário
                         </label>
+
                         <input
                             type="text"
-                            id="nome"
-                            name="nome"
+                            id="username"
+                            name="username"
                             class="form-control"
-                            value="{{ nome|default:'' }}"
-                            placeholder="Nome completo"
+                            value="{{ username|default:'' }}"
+                            placeholder="Ex.: joao.silva"
+                            autocomplete="username"
+                            required
                         >
+
+                        <div class="form-text">
+                            Este nome será utilizado para entrar no sistema.
+                        </div>
+
                     </div>
+
                     <div class="col-md-6">
+
                         <label
                             for="email"
                             class="form-label"
                         >
                             E-mail
                         </label>
+
                         <input
                             type="email"
                             id="email"
@@ -58,94 +90,161 @@
                             class="form-control"
                             value="{{ email|default:'' }}"
                             placeholder="usuario@ifmg.edu.br"
+                            autocomplete="email"
                         >
+
                     </div>
+
                 </div>
-                <div class="row g-3 mb-4">
-                    <div class="col-md-6 col-xl-3">
+
+                <!-- Nome e sobrenome -->
+                <div class="row g-3 mb-3">
+
+                    <div class="col-md-6">
+
+                        <label
+                            for="first_name"
+                            class="form-label"
+                        >
+                            Nome
+                        </label>
+
+                        <input
+                            type="text"
+                            id="first_name"
+                            name="first_name"
+                            class="form-control"
+                            value="{{ first_name|default:'' }}"
+                            placeholder="Nome"
+                            autocomplete="given-name"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label
+                            for="last_name"
+                            class="form-label"
+                        >
+                            Sobrenome
+                        </label>
+
+                        <input
+                            type="text"
+                            id="last_name"
+                            name="last_name"
+                            class="form-control"
+                            value="{{ last_name|default:'' }}"
+                            placeholder="Sobrenome"
+                            autocomplete="family-name"
+                        >
+
+                    </div>
+
+                </div>
+
+                <!-- Senha -->
+                <div class="row g-3 mb-3">
+
+                    <div class="col-md-6">
+
                         <label
                             for="senha"
                             class="form-label"
                         >
                             Senha
                         </label>
+
                         <input
                             type="password"
                             id="senha"
                             name="senha"
                             class="form-control"
-                            placeholder="********"
+                            placeholder="Digite uma senha"
+                            autocomplete="new-password"
+                            required
                         >
+
                     </div>
-                    <div class="col-md-6 col-xl-3">
+
+                    <div class="col-md-6">
+
                         <label
                             for="confirmar_senha"
                             class="form-label"
                         >
                             Confirmar senha
                         </label>
+
                         <input
                             type="password"
                             id="confirmar_senha"
                             name="confirmar_senha"
                             class="form-control"
-                            placeholder="********"
+                            placeholder="Repita a senha"
+                            autocomplete="new-password"
+                            required
                         >
+
                     </div>
-                    <div class="col-md-6 col-xl-3">
+
+                </div>
+
+                <!-- Status -->
+                <div class="row g-3 mb-4">
+
+                    <div class="col-md-6">
+
                         <label
                             for="status_usuario"
                             class="form-label"
                         >
-                            Status
+                            Status da conta
                         </label>
+
                         <select
                             id="status_usuario"
                             name="status_usuario"
                             class="form-select"
+                            required
                         >
+
                             <option
                                 value="Ativo"
-                                {% if status_usuario == 'Ativo' %}selected{% endif %}
+                                {% if status_usuario != 'Inativo' %}
+                                    selected
+                                {% endif %}
                             >
                                 Ativo
                             </option>
+
                             <option
                                 value="Inativo"
-                                {% if status_usuario == 'Inativo' %}selected{% endif %}
+                                {% if status_usuario == 'Inativo' %}
+                                    selected
+                                {% endif %}
                             >
                                 Inativo
                             </option>
+
                         </select>
+
+                        <div class="form-text">
+
+                            Usuários inativos permanecem cadastrados,
+                            mas não conseguem entrar no site.
+
+                        </div>
+
                     </div>
-                    <div class="col-md-6 col-xl-3">
-                        <label
-                            for="nivel_acesso"
-                            class="form-label"
-                        >
-                            Nível de acesso
-                        </label>
-                        <select
-                            id="nivel_acesso"
-                            name="nivel_acesso"
-                            class="form-select"
-                        >
-                            <option
-                                value="Administrador"
-                                {% if nivel_acesso == 'Administrador' %}selected{% endif %}
-                            >
-                                Administrador
-                            </option>
-                            <option
-                                value="Usuário padrão"
-                                {% if nivel_acesso == 'Usuário padrão' %}selected{% endif %}
-                            >
-                                Usuário padrão
-                            </option>
-                        </select>
-                    </div>
+
                 </div>
+
+                <!-- Botões -->
                 <div class="d-flex flex-wrap gap-2">
+
                     <button
                         type="submit"
                         class="btn btn-if"
@@ -153,14 +252,20 @@
                         <i class="bi bi-person-plus me-1"></i>
                         Salvar usuário
                     </button>
+
                     <a
                         href="{% url 'listar_usuarios' %}"
                         class="btn btn-if-outline"
                     >
-                        Ver usuários
+                        Cancelar
                     </a>
+
                 </div>
+
             </form>
+
         </div>
+
     </section>
+
 {% endblock %}
