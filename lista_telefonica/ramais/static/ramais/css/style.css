@@ -1,0 +1,633 @@
+:root {
+    --if-verde: #2f9e41;
+    --if-verde-claro: #64ad25;
+    --if-verde-escuro: #0f552b;
+    --if-verde-profundo: #083d1e;
+    --if-vermelho: #a61b1b;
+    --if-branco: #ffffff;
+    --if-cinza-claro: #f4f6f5;
+    --if-cinza-borda: #dfe5e1;
+    --if-texto: #243129;
+}
+
+/* =====================================
+   CONFIGURAÇÕES GERAIS
+===================================== */
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    color: var(--if-texto);
+    background-color: var(--if-cinza-claro);
+}
+
+.conteudo-principal {
+    flex: 1;
+}
+
+/* =====================================
+   CABEÇALHO INSTITUCIONAL
+===================================== */
+
+.faixa-institucional {
+    color: var(--if-branco);
+
+    background: linear-gradient(100deg,
+            var(--if-verde-profundo),
+            var(--if-verde-escuro));
+}
+
+.marca-institucional {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.25rem;
+
+    color: var(--if-branco);
+    text-decoration: none;
+}
+
+.marca-institucional:hover,
+.marca-institucional:focus {
+    color: var(--if-branco);
+}
+
+.caixa-logo {
+    width: 105px;
+    height: 86px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+
+    padding: 7px;
+
+    background-color: var(--if-branco);
+    border-radius: 5px;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.logo-if {
+    display: block;
+
+    width: auto;
+    max-width: 100%;
+    height: 70px;
+
+    object-fit: contain;
+}
+
+.texto-institucional {
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1.12;
+}
+
+.nome-instituicao {
+    font-size: clamp(1.3rem, 2.4vw, 2rem);
+    font-weight: 700;
+}
+
+.nome-campus {
+    margin-top: 4px;
+
+    font-size: clamp(1rem, 1.8vw, 1.45rem);
+    font-weight: 500;
+}
+
+.nome-servico {
+    margin-top: 9px;
+
+    color: #dff1d7;
+
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* =====================================
+   NAVEGAÇÃO
+===================================== */
+
+.faixa-navegacao {
+    min-height: 52px;
+
+    padding-top: 0;
+    padding-bottom: 0;
+
+    background: linear-gradient(90deg,
+            #4f9f20,
+            var(--if-verde-claro));
+
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
+}
+
+/*
+Não deixa uma opção permanentemente escura
+por estar selecionada ou aberta.
+*/
+.faixa-navegacao .nav-link,
+.faixa-navegacao .nav-link.active,
+.faixa-navegacao .nav-link.show {
+    padding: 15px 16px;
+
+    color: rgba(255, 255, 255, 0.96);
+    background-color: transparent;
+
+    font-weight: 500;
+    border-radius: 3px;
+
+    transition:
+        color 0.2s,
+        background-color 0.2s;
+}
+
+.faixa-navegacao .nav-link:hover,
+.faixa-navegacao .nav-link:focus {
+    color: var(--if-branco);
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.faixa-navegacao .dropdown-menu {
+    margin-top: 0;
+
+    border: 0;
+    border-top: 3px solid var(--if-verde-escuro);
+    border-radius: 0 0 5px 5px;
+
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.2);
+}
+
+.faixa-navegacao .dropdown-item {
+    padding: 10px 16px;
+}
+
+.faixa-navegacao .dropdown-item:hover,
+.faixa-navegacao .dropdown-item:focus {
+    background-color: #e8f4e4;
+}
+
+.faixa-navegacao .dropdown-item:active {
+    color: var(--if-branco);
+    background-color: var(--if-verde);
+}
+
+.faixa-navegacao .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Abre o submenu ao passar o mouse no computador */
+@media (min-width: 992px) {
+
+    .faixa-navegacao .dropdown-menu {
+        display: block;
+
+        opacity: 0;
+        visibility: hidden;
+
+        transform: translateY(7px);
+
+        pointer-events: none;
+
+        transition:
+            opacity 0.18s ease,
+            visibility 0.18s ease,
+            transform 0.18s ease;
+    }
+
+    .faixa-navegacao .dropdown:hover>.dropdown-menu,
+    .faixa-navegacao .dropdown:focus-within>.dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+
+        transform: translateY(0);
+
+        pointer-events: auto;
+    }
+
+}
+
+/* =====================================
+   REGIÃO DA CONTA
+===================================== */
+
+.area-conta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    color: var(--if-branco);
+}
+
+.conta-identidade {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.conta-avatar {
+    width: 37px;
+    height: 37px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+
+    color: var(--if-branco);
+    background-color: rgba(255, 255, 255, 0.18);
+
+    font-size: 1.25rem;
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+}
+
+.conta-dados {
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1.15;
+}
+
+.conta-dados strong {
+    max-width: 210px;
+
+    overflow: hidden;
+
+    font-size: 0.92rem;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.conta-dados small {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.72rem;
+}
+
+.btn-entrar-site,
+.btn-sair-site {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    padding: 7px 13px;
+
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: none;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s,
+        background-color 0.2s,
+        border-color 0.2s;
+}
+
+.btn-entrar-site {
+    color: var(--if-verde-escuro);
+    background-color: var(--if-branco);
+
+    border: 1px solid var(--if-branco);
+}
+
+.btn-entrar-site:hover,
+.btn-entrar-site:focus {
+    color: var(--if-branco);
+    background-color: transparent;
+}
+
+.btn-sair-site {
+    color: var(--if-branco);
+    background-color: rgba(135, 20, 20, 0.65);
+
+    border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+.btn-sair-site:hover,
+.btn-sair-site:focus {
+    color: var(--if-branco);
+    background-color: var(--if-vermelho);
+}
+
+.acesso-restrito-cabecalho {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    color: rgba(255, 255, 255, 0.9);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* =====================================
+   BOTÕES DO SITE
+===================================== */
+
+.btn-if {
+    color: var(--if-branco);
+    background-color: var(--if-verde);
+
+    border: 1px solid var(--if-verde);
+}
+
+.btn-if:hover,
+.btn-if:focus,
+.btn-if:active {
+    color: var(--if-branco);
+    background-color: var(--if-verde-escuro);
+
+    border-color: var(--if-verde-escuro);
+}
+
+.btn-if-outline {
+    color: var(--if-verde-escuro);
+    background-color: transparent;
+
+    border: 1px solid var(--if-verde);
+}
+
+.btn-if-outline:hover,
+.btn-if-outline:focus,
+.btn-if-outline:active {
+    color: var(--if-branco);
+    background-color: var(--if-verde);
+
+    border-color: var(--if-verde);
+}
+
+/* =====================================
+   CARDS, BADGES E TABELAS
+===================================== */
+
+.badge-if {
+    color: var(--if-branco);
+    background-color: var(--if-verde);
+}
+
+.card-if {
+    overflow: hidden;
+
+    border: 1px solid var(--if-cinza-borda);
+    border-top: 4px solid var(--if-verde);
+}
+
+.card-if .card-header {
+    background-color: #f8faf8;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.tabela-acoes {
+    min-width: 175px;
+}
+
+.tabela-acoes-usuarios {
+    min-width: 220px;
+}
+
+.lista-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+}
+
+/* =====================================
+   LOGIN
+===================================== */
+
+.login-wrapper {
+    min-height: 500px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 470px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--if-cinza-borda);
+    border-top: 5px solid var(--if-verde);
+    border-radius: 8px;
+}
+
+.login-icone {
+    width: 72px;
+    height: 72px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--if-branco);
+    background-color: var(--if-verde);
+
+    font-size: 2rem;
+
+    border-radius: 50%;
+}
+
+.login-card .input-group-text {
+    min-width: 46px;
+
+    justify-content: center;
+
+    color: var(--if-verde-escuro);
+    background-color: #edf5eb;
+}
+
+.login-card .form-control {
+    min-height: 45px;
+}
+
+.login-voltar {
+    color: #68756d;
+    text-decoration: none;
+}
+
+.login-voltar:hover,
+.login-voltar:focus {
+    color: var(--if-verde-escuro);
+    text-decoration: underline;
+}
+
+/* =====================================
+   PÁGINA INICIAL ADMINISTRATIVA
+===================================== */
+
+.painel-card {
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+.painel-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.11) !important;
+}
+
+.painel-card-icone {
+    display: block;
+
+    margin-bottom: 15px;
+
+    color: var(--if-verde);
+
+    font-size: 2.2rem;
+}
+
+/* =====================================
+   PÁGINA INICIAL PÚBLICA
+===================================== */
+
+.pagina-publica {
+    padding: 25px 0;
+}
+
+.painel-publico-icone {
+    color: var(--if-verde);
+    font-size: 3rem;
+}
+
+.lista-publica {
+    margin: 22px 0;
+    padding-left: 1.3rem;
+}
+
+.lista-publica li {
+    margin-bottom: 10px;
+}
+
+/* =====================================
+   FORMULÁRIOS
+===================================== */
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--if-verde);
+
+    box-shadow: 0 0 0 0.25rem rgba(47, 158, 65, 0.2);
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+/* =====================================
+   RODAPÉ
+===================================== */
+
+.rodape-site {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: var(--if-verde-escuro);
+
+    border-top: 5px solid var(--if-verde-claro);
+}
+
+.rodape-site small {
+    display: block;
+}
+
+/* =====================================
+   RESPONSIVIDADE
+===================================== */
+
+@media (max-width: 991.98px) {
+
+    .faixa-navegacao {
+        padding: 7px 0;
+    }
+
+    .faixa-navegacao .nav-link,
+    .faixa-navegacao .nav-link.active,
+    .faixa-navegacao .nav-link.show {
+        padding: 11px 12px;
+    }
+
+    .area-conta {
+        width: 100%;
+
+        justify-content: space-between;
+
+        margin-top: 8px;
+        padding: 13px 12px;
+
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+}
+
+@media (max-width: 575.98px) {
+
+    .marca-institucional {
+        gap: 12px;
+    }
+
+    .caixa-logo {
+        width: 72px;
+        height: 67px;
+
+        padding: 6px;
+    }
+
+    .logo-if {
+        height: 55px;
+    }
+
+    .nome-instituicao {
+        font-size: 1.08rem;
+    }
+
+    .nome-campus {
+        font-size: 0.92rem;
+    }
+
+    .nome-servico {
+        margin-top: 5px;
+        font-size: 0.7rem;
+    }
+
+    .conta-dados strong {
+        max-width: 135px;
+    }
+
+    .btn-sair-site,
+    .btn-entrar-site {
+        padding: 6px 9px;
+    }
+
+    .pagina-publica .display-4 {
+        font-size: 2.2rem;
+    }
+
+}

@@ -1,0 +1,167 @@
+{% extends 'ramais/base.html' %}
+
+{% block title %}
+  IFMG - Lista de Ramais | Página Inicial
+{% endblock %}
+
+{% block content %}
+  {% if user.is_staff %}
+    <!-- Página inicial do administrador -->
+    <section class="text-center mb-5">
+      <span class="badge badge-if mb-3">Painel administrativo</span>
+
+      <h1 class="display-5 fw-bold">
+        Bem-vindo,{% if user.first_name %}
+          {{ user.first_name }}
+        {% else %}
+          {{ user.username }}
+        {% endif %}
+      </h1>
+
+      <p class="lead text-muted">Gerencie setores, ramais, pessoas, vínculos e usuários do sistema.</p>
+    </section>
+
+    <section class="row g-4">
+      <!-- Consultar ramais -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card card-if painel-card shadow-sm h-100">
+          <div class="card-body">
+            <i class="bi bi-telephone painel-card-icone"></i>
+
+            <h5 class="card-title">Consultar ramais</h5>
+
+            <p class="card-text text-muted">Consulte setores, e-mails e números de ramais.</p>
+
+            <a href="{% url 'ver_setores' %}" class="btn btn-if">Consultar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Setores -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card card-if painel-card shadow-sm h-100">
+          <div class="card-body">
+            <i class="bi bi-building painel-card-icone"></i>
+
+            <h5 class="card-title">Gerenciar setores</h5>
+
+            <p class="card-text text-muted">Cadastre, edite ou exclua setores e ramais.</p>
+
+            <a href="{% url 'listar_setores' %}" class="btn btn-if">Gerenciar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pessoas -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card card-if painel-card shadow-sm h-100">
+          <div class="card-body">
+            <i class="bi bi-people painel-card-icone"></i>
+
+            <h5 class="card-title">Gerenciar pessoas</h5>
+
+            <p class="card-text text-muted">Consulte, cadastre e atualize os contatos.</p>
+
+            <a href="{% url 'listar_pessoas' %}" class="btn btn-if">Gerenciar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vínculos -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card card-if painel-card shadow-sm h-100">
+          <div class="card-body">
+            <i class="bi bi-diagram-3 painel-card-icone"></i>
+
+            <h5 class="card-title">Gerenciar vínculos</h5>
+
+            <p class="card-text text-muted">Vincule ou remova pessoas dos setores.</p>
+
+            <a href="{% url 'gerenciar_vinculos' %}" class="btn btn-if">Gerenciar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usuários -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card card-if painel-card shadow-sm h-100">
+          <div class="card-body">
+            <i class="bi bi-person-gear painel-card-icone"></i>
+
+            <h5 class="card-title">Gerenciar usuários</h5>
+
+            <p class="card-text text-muted">Cadastre e controle os usuários administradores.</p>
+
+            <a href="{% url 'listar_usuarios' %}" class="btn btn-if">Gerenciar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Novo usuário -->
+      <div class="col-md-6 col-xl-4">
+        <div class="card card-if painel-card shadow-sm h-100">
+          <div class="card-body">
+            <i class="bi bi-person-plus painel-card-icone"></i>
+
+            <h5 class="card-title">Novo usuário</h5>
+
+            <p class="card-text text-muted">Crie uma nova conta administrativa.</p>
+
+            <a href="{% url 'gerenciar_usuarios' %}" class="btn btn-if">Cadastrar</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  {% else %}
+    <!-- Página inicial pública -->
+    <section class="pagina-publica">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-7">
+          <span class="badge badge-if mb-3">Consulta pública</span>
+
+          <h1 class="display-4 fw-bold">Lista de Ramais do IFMG Campus São João Evangelista</h1>
+
+          <p class="lead text-muted mt-3">Consulte rapidamente o nome, o e-mail e o número de ramal de cada setor da instituição.</p>
+
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            <a href="{% url 'ver_setores' %}" class="btn btn-if btn-lg">
+              <i class="bi bi-search me-1"></i>
+              Consultar ramais
+            </a>
+
+            {% if not user.is_authenticated %}
+              <a href="{% url 'login' %}" class="btn btn-if-outline btn-lg">
+                <i class="bi bi-shield-lock me-1"></i>
+                Acesso administrativo
+              </a>
+            {% endif %}
+          </div>
+
+          {% if user.is_authenticated and not user.is_staff %}
+            <div class="alert alert-warning mt-4">Sua conta está conectada, mas não possui permissão administrativa.</div>
+          {% endif %}
+        </div>
+
+        <div class="col-lg-5">
+          <div class="card card-if shadow-sm">
+            <div class="card-body p-4">
+              <i class="bi bi-telephone-fill painel-publico-icone"></i>
+
+              <h2 class="h4 fw-bold mt-3">Informações disponíveis</h2>
+
+              <ul class="lista-publica">
+                <li>Nome do setor;</li>
+
+                <li>E-mail institucional;</li>
+
+                <li>Número do ramal.</li>
+              </ul>
+
+              <a href="{% url 'ver_setores' %}" class="btn btn-if w-100">Abrir lista telefônica</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+{% endblock %}

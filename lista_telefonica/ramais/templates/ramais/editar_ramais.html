@@ -1,0 +1,64 @@
+{% extends 'ramais/base.html' %}
+
+{% block title %}
+  IFMG - Lista de Ramais | Editar Setor
+{% endblock %}
+
+{% block content %}
+  <section class="mb-4">
+    <span class="badge badge-if mb-3">Administração</span>
+
+    <h1 class="fw-bold">Editar setor e ramal</h1>
+
+    <p class="text-muted">Atualize as informações do setor selecionado.</p>
+  </section>
+
+  <section class="card card-if shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title mb-4">Atualização do setor</h5>
+
+      <form method="post" action="{% url 'editar_setores' setor.id %}">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome do setor</label>
+
+          <input type="text" id="nome" name="nome" class="form-control {% if erro_nome %}is-invalid{% endif %}" value="{{ nome|default:setor.nome }}" />
+
+          {% if erro_nome %}
+            <div class="invalid-feedback">{{ erro_nome }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">E-mail do setor</label>
+
+          <input type="email" id="email" name="email" class="form-control {% if erro_email %}is-invalid{% endif %}" value="{{ email|default:setor.email }}" />
+
+          {% if erro_email %}
+            <div class="invalid-feedback">{{ erro_email }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-4">
+          <label for="ramal" class="form-label">Ramal</label>
+
+          <input type="text" id="ramal" name="ramal" class="form-control {% if erro_ramal %}is-invalid{% endif %}" value="{{ ramal|default:setor.ramal }}" maxlength="4" inputmode="numeric" />
+
+          {% if erro_ramal %}
+            <div class="invalid-feedback">{{ erro_ramal }}</div>
+          {% endif %}
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+          <button type="submit" class="btn btn-if">
+            <i class="bi bi-floppy me-1"></i>
+            Salvar alterações
+          </button>
+
+          <a href="{% url 'listar_setores' %}" class="btn btn-if-outline">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </section>
+{% endblock %}
