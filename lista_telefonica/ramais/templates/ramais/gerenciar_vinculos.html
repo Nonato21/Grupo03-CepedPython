@@ -84,6 +84,7 @@
                                 <th>ID</th>
                                 <th>Nome</th>
                                 <th>E-mail</th>
+                                <th class="tabela-acoes">Ações</th>
                             </tr>
 
                         </thead>
@@ -96,6 +97,18 @@
                                     <td>{{ pessoa.id }}</td>
                                     <td>{{ pessoa.nome }}</td>
                                     <td>{{ pessoa.email }}</td>
+                                    <td>
+                                        <form method="post" action="{% url 'remover_vinculo' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="setor_id" value="{{ setor_selecionado }}">
+                                            <input type="hidden" name="pessoa_id" value="{{ pessoa.id }}">
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Remover {{ pessoa.nome }} deste setor?')">
+                                                <i class="bi bi-unlink me-1"></i>
+                                                Remover
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
 
                             {% empty %}
@@ -103,7 +116,7 @@
                                 <tr>
 
                                     <td
-                                        colspan="3"
+                                        colspan="4"
                                         class="text-muted py-4"
                                     >
                                         Nenhuma pessoa vinculada a este setor.

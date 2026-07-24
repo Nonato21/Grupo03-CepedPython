@@ -411,6 +411,25 @@ def adicionar_vinculo(request):
     return redirect('gerenciar_vinculos')
 
 @login_required
+def remover_vinculo(request):
+    if request.method == "POST":
+        setor_id = request.POST.get('setor_id')
+        pessoa_id = request.POST.get('pessoa_id')
+
+        if setor_id and pessoa_id:
+            setor = get_object_or_404(Setor, id=setor_id)
+            pessoa = get_object_or_404(Pessoa, id=pessoa_id)
+
+            pessoa.setores.remove(setor)
+
+            messages.success(request, f"'{pessoa.nome}' foi removido(a) do setor com sucesso!")
+
+            url_retorno = reverse('gerenciar_vinculos') + f'?setor_id={setor.id}'
+            return redirect(url_retorno)
+
+    return redirect('gerenciar_vinculos')
+
+@login_required
 def exportar_setores_pdf(request):
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = 'attachment; filename="listagem_setores.pdf"'

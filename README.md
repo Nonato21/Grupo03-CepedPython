@@ -14,7 +14,8 @@ Sistema web para consulta e gerenciamento de ramais telefônicos, setores e cont
 
 - **Python 3.10+**
 - **Django 6.0.6**
-- **MySQL**
+- **SQLite**
+- **ReportLab 4.x**
 - **Bootstrap 5.3.8**
 - **HTML5 / CSS3**
 
@@ -24,16 +25,18 @@ Sistema web para consulta e gerenciamento de ramais telefônicos, setores e cont
 Grupo03-CepedPython/
 └── lista_telefonica/
     ├── manage.py
+    ├── requirements.txt
     ├── lista_telefonica/        # Configurações do projeto Django
     │   ├── settings.py
     │   ├── urls.py
     │   ├── wsgi.py
     │   └── asgi.py
     └── ramais/                  # App principal
-        ├── models.py            # Modelos: Setor, Pessoa, Usuario
+        ├── models.py            # Modelos: Setor, Pessoa
         ├── views.py             # Lógica das páginas
         ├── urls.py              # Rotas da aplicação
         ├── admin.py             # Registro dos modelos no admin
+        ├── migrations/          # Migrações do banco de dados
         ├── templates/ramais/    # Templates HTML
         └── static/ramais/       # Arquivos estáticos (CSS, imagens)
 ```
@@ -51,15 +54,12 @@ venv\Scripts\activate   # Windows
 # source venv/bin/activate  # Linux/macOS
 
 # Instale as dependências
-pip install django mysqlclient
-
-# Configure o banco MySQL em lista_telefonica/settings.py
-# (database: lista_telefonica, user: root, password: root, host: localhost)
+pip install -r requirements.txt
 
 # Execute as migrações
 python manage.py migrate
 
-# Crie um superusuário (opcional)
+# Crie um superusuário para acesso administrativo
 python manage.py createsuperuser
 
 # Inicie o servidor
@@ -68,18 +68,22 @@ python manage.py runserver
 
 ## 📌 Rotas
 
-| URL | Descrição |
-|-----|-----------|
-| `/` | Página inicial |
-| `/setores/` | Listagem de setores |
-| `/gerenciar/` | Cadastro de setores |
-| `/admin/` | Painel administrativo |
+| URL | Descrição | Requer Login |
+|-----|-----------|--------------|
+| `/` | Página inicial | Não |
+| `/setores/visualizarramais/` | Consulta pública de ramais | Não |
+| `/setores/` | Gerenciar setores | Sim |
+| `/setores/cadastrar/` | Cadastrar setor | Sim |
+| `/pessoas/cadastrar/` | Cadastrar pessoa | Sim |
+| `/pessoas/listar/` | Listar pessoas | Sim |
+| `/vinculos/gerenciar/` | Gerenciar vínculos | Sim |
+| `/admin/` | Painel administrativo Django | Sim |
+| `/login/` | Login | - |
 
 ## 🗄️ Modelos de Dados
 
-- **Setor** — nome, e-mail, ramal
-- **Pessoa** — nome, e-mail, setores (ManyToMany)
-- **Usuario** — nome, e-mail (único), senha, status, nível de acesso
+- **Setor** — nome (único), e-mail (único), ramal (único, 4 dígitos)
+- **Pessoa** — nome, e-mail (único), setores (ManyToMany)
 
 ## 📄 Licença
 

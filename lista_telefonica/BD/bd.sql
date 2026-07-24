@@ -1,3 +1,9 @@
+-- ============================================================
+-- ARQUIVO LEGADO - Apenas para referência histórica.
+-- O projeto atualmente utiliza SQLite via ORM do Django.
+-- As migrações em ramais/migrations/ substituem este script.
+-- ============================================================
+
 CREATE DATABASE lista_telefonica;
 USE lista_telefonica;
 
