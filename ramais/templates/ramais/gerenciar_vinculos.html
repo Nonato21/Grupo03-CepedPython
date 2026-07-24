@@ -51,7 +51,6 @@
                                 <th>ID</th>
                                 <th>Nome</th>
                                 <th>E-mail</th>
-                                <!-- NOVA COLUNA ADICIONADA AQUI -->
                                 <th>Ações</th> 
                             </tr>
                         </thead>
@@ -63,7 +62,6 @@
                                     <td>{{ pessoa.nome }}</td>
                                     <td>{{ pessoa.email }}</td>
                                     
-                                    <!-- NOVO BOTÃO DE REMOVER ADICIONADO AQUI -->
                                     <td>
                                         <a href="{% url 'remover_vinculo' setor_selecionado pessoa.id %}" class="btn btn-sm btn-outline-danger shadow-sm" title="Remover vínculo">
                                             <i class="bi bi-trash"></i> Remover
@@ -72,7 +70,6 @@
                                 </tr>
                             {% empty %}
                                 <tr>
-                                    <!-- COLSPAN MUDOU DE 3 PARA 4 -->
                                     <td colspan="4" class="text-muted py-4">
                                         Nenhuma pessoa vinculada a este setor.
                                     </td>
