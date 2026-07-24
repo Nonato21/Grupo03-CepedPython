@@ -1,110 +1,140 @@
 {% extends 'ramais/base.html' %}
 
 {% block title %}
-IFMG - Lista de Ramais | Usuários Cadastrados
+  IFMG - Lista de Ramais | Usuários
 {% endblock %}
 
 {% block content %}
-<section class="mb-4">
-  <span class="badge badge-if mb-3">Administração</span>
+  <section class="mb-4">
+    <span class="badge badge-if mb-3">Administração</span>
 
-  <h1 class="fw-bold">Usuários cadastrados</h1>
+    <h1 class="fw-bold">Usuários do sistema</h1>
 
-  <p class="text-muted">Consulte, edite ou exclua os usuários cadastrados no sistema.</p>
-</section>
+    <p class="text-muted">Consulte, cadastre, edite ou exclua usuários administradores.</p>
+  </section>
 
-<section class="card card-if shadow-sm">
-  <div class="card-body">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
-      <h5 class="card-title mb-0">Usuários do sistema</h5>
+  <!-- Pesquisa e cadastro -->
+  <section class="mb-4">
+    <div class="row g-3 align-items-center">
+      <div class="col-md-8 col-lg-6">
+        <form method="get" action="{% url 'listar_usuarios' %}">
+          <div class="input-group shadow-sm">
+            <input type="search" name="q" class="form-control" placeholder="Pesquisar por nome, usuário ou e-mail..." value="{{ request.GET.q|default:'' }}" />
 
-      <a href="{% url 'gerenciar_usuarios' %}" class="btn btn-if btn-sm">
-        <i class="bi bi-person-plus me-1"></i>
-        Novo usuário
-      </a>
+            <button type="submit" class="btn btn-if" aria-label="Pesquisar"><i class="bi bi-search"></i></button>
+          </div>
+        </form>
+      </div>
+
+      <div class="col-md-4 col-lg-6 text-md-end">
+        <a href="{% url 'gerenciar_usuarios' %}" class="btn btn-if">
+          <i class="bi bi-person-plus me-1"></i>
+          Novo usuário
+        </a>
+      </div>
     </div>
+  </section>
 
-    <div class="table-responsive text-center">
-      <table class="table table-striped table-hover align-middle mb-0">
-        <thead class="table-success">
-          <tr>
-            <th scope="col">ID</th>
+  <!-- Tabela -->
+  <section class="card card-if shadow-sm">
+    <div class="card-body">
+      <div class="table-responsive text-center">
+        <table class="table table-striped table-hover align-middle mb-0">
+          <thead class="table-success">
+            <tr>
+              <th scope="col">ID</th>
 
-            <th scope="col">Nome</th>
+              <th scope="col">Usuário</th>
 
-            <th scope="col">E-mail</th>
+              <th scope="col">Nome</th>
 
-            <th scope="col">Status</th>
+              <th scope="col">E-mail</th>
 
-            <th scope="col">Nível</th>
+              <th scope="col">Status</th>
 
-            <th scope="col" class="tabela-acoes">Ações</th>
-          </tr>
-        </thead>
+              <th scope="col">Nível</th>
 
-        <tbody>
-          {% for usuario in lista_usuarios %}
-          <tr>
-            <td>{{ usuario.id }}</td>
+              <th scope="col" class="tabela-acoes tabela-acoes-usuarios">Ações</th>
+            </tr>
+          </thead>
 
-            <td>{{ usuario.nome }}</td>
+          <tbody>
+            {% for usuario in lista_usuarios %}
+              <tr>
+                <td>{{ usuario.id }}</td>
 
-            <td>{{ usuario.email }}</td>
+                <td class="fw-semibold">{{ usuario.username }}</td>
 
-            <td>
-              {% if usuario.status_usuario == 'Ativo' %}
-              <span class="badge bg-success">Ativo</span>
-              {% else %}
-              <span class="badge bg-danger">Inativo</span>
-              {% endif %}
-            </td>
+                <td>
+                  {% if usuario.get_full_name %}
+                    {{ usuario.get_full_name }}
+                  {% else %}
+                    <span class="text-muted">Não informado</span>
+                  {% endif %}
+                </td>
 
-            <td>
-              {% if usuario.nivel_acesso == 'Administrador' %}
-              <span class="badge bg-primary">Administrador</span>
-              {% else %}
-              <span class="badge bg-secondary">Usuário padrão</span>
-              {% endif %}
-            </td>
+                <td>
+                  {% if usuario.email %}
+                    {{ usuario.email }}
+                  {% else %}
+                    <span class="text-muted">Não informado</span>
+                  {% endif %}
+                </td>
 
-            <td>
-              <div class="d-flex flex-wrap justify-content-center gap-2">
-                <!-- Editar -->
-                <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-warning btn-sm">
-                  <i class="bi bi-pencil me-1"></i>
-                  Editar
-                </a>
+                <td>
+                  {% if usuario.is_active %}
+                    <span class="badge bg-success">Ativo</span>
+                  {% else %}
+                    <span class="badge bg-danger">Inativo</span>
+                  {% endif %}
+                </td>
 
-                <!-- Excluir -->
-                <form method="post" action="{% url 'deletar_usuario' usuario.id %}">
-                  {% csrf_token %}
+                <td>
+                  {% if usuario.is_superuser %}
+                    <span class="badge bg-danger">Superadministrador</span>
+                  {% elif usuario.is_staff %}
+                    <span class="badge bg-primary">Administrador</span>
+                  {% else %}
+                    <span class="badge bg-secondary">Usuário</span>
+                  {% endif %}
+                </td>
 
-                  <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(
-                                                    'Tem certeza que deseja excluir este usuário?'
-                                                )">
-                    <i class="bi bi-trash me-1"></i>
-                    Excluir
-                  </button>
-                </form>
-              </div>
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="6" class="text-muted py-4">Nenhum usuário cadastrado.</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <br>
-      <a href="{% url 'exportar_usuarios_pdf' %}" class="btn btn-danger">
+                <td>
+                  <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <!-- Um administrador comum não edita superusuários -->
+                    {% if not usuario.is_superuser or request.user.is_superuser %}
+                      <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil me-1"></i>
+                        Editar
+                      </a>
+                    {% endif %}
 
-        <i class="bi bi-file-earmark-pdf-fill"></i>
+                    <!-- Não permite excluir a própria conta ou superusuários -->
+                    {% if usuario.id != request.user.id and not usuario.is_superuser %}
+                      <form method="post" action="{% url 'deletar_usuario' usuario.id %}">
+                        {% csrf_token %}
 
-        Exportar PDF
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">
+                          <i class="bi bi-trash me-1"></i>
+                          Excluir
+                        </button>
+                      </form>
+                    {% endif %}
 
-      </a>
+                    {% if usuario.id == request.user.id %}
+                      <span class="badge bg-light text-dark border align-self-center">Sua conta</span>
+                    {% endif %}
+                  </div>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="7" class="text-muted py-4">Nenhum usuário encontrado.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 {% endblock %}
