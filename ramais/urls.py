@@ -19,10 +19,10 @@ urlpatterns = [
     path('pessoas/excluir/<int:id>/', views.deletar_pessoa, name='deletar_pessoa'),
 
     # usuarios
-    # path('usuarios/listar/',views.listar_usuarios,name='listar_usuarios'),
-    # path('usuarios/cadastrar/',views.cadastrar_usuario,name='gerenciar_usuarios'),
-    # path('usuarios/editar/<int:id>/',views.editar_usuario,name='editar_usuario'),
-    # path('usuarios/excluir/<int:id>/',views.deletar_usuario,name='deletar_usuario'),
+    path('usuarios/listar/',views.listar_usuarios,name='listar_usuarios'),
+    path('usuarios/cadastrar/',views.cadastrar_usuario,name='gerenciar_usuarios'),
+    path('usuarios/editar/<int:id>/',views.editar_usuario,name='editar_usuario'),
+    path('usuarios/excluir/<int:id>/',views.deletar_usuario,name='deletar_usuario'),
     
     # vinculos
     path("vinculos/gerenciar/",views.gerenciar_vinculos,name="gerenciar_vinculos"),
