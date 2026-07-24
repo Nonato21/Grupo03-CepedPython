@@ -1,53 +1,77 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IFMG - Acesso Restrito</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'ramais/css/style.css' %}">
-  <style>
-    body { background-color: #f4f6f9; }
-    .card-login { border-top: 4px solid #28a745; }
-  </style>
-</head>
-<body class="d-flex align-items-center justify-content-center vh-100">
+{% extends 'ramais/base.html' %}
 
-  <div class="card shadow-sm card-login" style="width: 100%; max-width: 400px;">
-    <div class="card-body p-4">
-      <div class="text-center mb-4">
-        <img src="{% static 'ramais/img/logo-if.png' %}" alt="Logo IFMG" width="80" class="mb-3">
-        <h4 class="fw-bold text-success">Acesso Restrito</h4>
-        <p class="text-muted small">Faça login para gerenciar a lista telefônica</p>
-      </div>
+{% block title %}
+  IFMG - Lista de Ramais | Entrar
+{% endblock %}
 
-      {% if form.errors %}
-        <div class="alert alert-danger text-center p-2 mb-3" role="alert">
-          Usuário ou senha incorretos.
-        </div>
-      {% endif %}
+{% block content %}
+  <section class="login-wrapper">
+    <div class="login-card card shadow">
+      <div class="card-body p-4 p-md-5">
+        <div class="text-center mb-4">
+          <div class="login-icone">
+            <i class="bi bi-shield-lock"></i>
+          </div>
 
-      <form method="POST">
-        {% csrf_token %}
-        <div class="mb-3">
-          <label class="form-label fw-bold text-secondary">Usuário</label>
-          <input type="text" name="username" class="form-control" placeholder="Seu usuário" required autofocus>
-        </div>
-        
-        <div class="mb-4">
-          <label class="form-label fw-bold text-secondary">Senha</label>
-          <input type="password" name="password" class="form-control" placeholder="********" required>
+          <h1 class="h3 fw-bold mt-3">Acesso administrativo</h1>
+
+          <p class="text-muted mb-0">Entre com o nome de usuário e a senha cadastrados no sistema.</p>
         </div>
 
-        <button type="submit" class="btn btn-success w-100 fw-bold">Entrar</button>
-      </form>
+        {% if form.errors %}
+          <div class="alert alert-danger">
+            <i class="bi bi-exclamation-circle me-1"></i>
 
-      <div class="text-center mt-4">
-        <a href="{% url 'index' %}" class="text-decoration-none text-muted small">Voltar para a consulta pública</a>
+            Nome de usuário ou senha incorretos.
+          </div>
+        {% endif %}
+
+        {% if next and user.is_authenticated %}
+          <div class="alert alert-warning">Sua conta não possui permissão para acessar a página solicitada.</div>
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+
+          <!-- Usuário -->
+          <div class="mb-3">
+            <label for="id_username" class="form-label fw-semibold">Nome de usuário</label>
+
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-person"></i></span>
+
+              <input type="text" id="id_username" name="username" class="form-control" value="{{ form.username.value|default:'' }}" placeholder="Digite seu usuário" autocomplete="username" autofocus required />
+            </div>
+          </div>
+
+          <!-- Senha -->
+          <div class="mb-4">
+            <label for="id_password" class="form-label fw-semibold">Senha</label>
+
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-key"></i></span>
+
+              <input type="password" id="id_password" name="password" class="form-control" placeholder="Digite sua senha" autocomplete="current-password" required />
+            </div>
+          </div>
+
+          {% if next %}
+            <input type="hidden" name="next" value="{{ next }}" />
+          {% endif %}
+
+          <button type="submit" class="btn btn-if btn-lg w-100">
+            <i class="bi bi-box-arrow-in-right me-1"></i>
+            Entrar
+          </button>
+        </form>
+
+        <div class="text-center mt-4">
+          <a href="{% url 'index' %}" class="login-voltar">
+            <i class="bi bi-arrow-left me-1"></i>
+            Voltar para a consulta pública
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-
-</body>
-</html>
+  </section>
+{% endblock %}
