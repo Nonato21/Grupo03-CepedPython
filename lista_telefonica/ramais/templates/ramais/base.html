@@ -116,6 +116,13 @@
                     </li>
 
                     <li>
+                      <a href="{% url 'listar_pessoas' %}" class="dropdown-item">
+                        <i class="bi bi-people me-2"></i>
+                        Pessoas
+                      </a>
+                    </li>
+
+                    <li>
                       <a href="{% url 'gerenciar_vinculos' %}" class="dropdown-item">
                         <i class="bi bi-diagram-3 me-2"></i>
                         Vínculos
@@ -234,14 +241,19 @@
                         alert
                         {% if message.tags == 'error' %}
               
+              
                             alert-danger
 
+
             {% elif message.tags %}
+              
               
                             alert-{{ message.tags }}
             {% else %}
               
+              
                             alert-info
+
 
             {% endif %}
                         alert-dismissible
