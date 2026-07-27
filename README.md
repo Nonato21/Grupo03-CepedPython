@@ -205,13 +205,12 @@ reportlab>=4.0,<5.0
 Projeto desenvolvido para fins educacionais no âmbito do programa **Bolsa Futuro Digital — CEPEDI**.
 
 ### Equipe (Grupo 3)
-- [@Erick]
-- [@Felipe]
-- [@Gabriel]
-- [@Marco]
-- [@Rhana]
-- [@Vitor Hugo]
-- [@Abelardo] — *Orientador*
+- [@Saas]
+- [Nonato]
+- [@Fetulio]
+- [@rafael]
+- [@Claudia]
+- [@Abelardo] — *
 
 ---
 
