@@ -207,7 +207,7 @@ Projeto desenvolvido para fins educacionais no âmbito do programa **Bolsa Futur
 ### Equipe (Grupo 3)
 - [@Saas]
 - [Nonato]
-- [@Fetulio]
+- [@Getulio]
 - [@rafael]
 - [@Claudia]
 - [@Abelardo] — *
