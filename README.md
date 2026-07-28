@@ -163,7 +163,7 @@ Grupo03-CepedPython/
 ```bash
 # 1. Clone o repositório
 git clone https://github.com/seu-usuario/Grupo03-CepedPython.git
-cd Grupo03-CepedPython
+cd lista_telefonica  
 
 # 2. Crie e ative um ambiente virtual
 python -m venv venv
