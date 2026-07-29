@@ -806,7 +806,6 @@ def remover_vinculo(request):
 
     return redirect('gerenciar_vinculos')
 
-@login_required
 def exportar_setores_pdf(request):
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = 'attachment; filename="listagem_setores.pdf"'
